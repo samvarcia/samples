@@ -14,11 +14,11 @@
   overflow: hidden;
 }
 
-.panorama_slider .slide_image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  pointer-events: none
+
+.swiper_slide {
+  background-size: cover;
+  background-position: center;
+  transform-style: preserve-3d;
 }
 
 .swiper_container {
@@ -33,12 +33,12 @@
   pointer-events: none
 }
 
-
-.swiper_slide {
-  background-size: cover;
-  background-position: center;
-  transform-style: preserve-3d;
+.panorama-slider .swiper {
+  width: 100%;
+  height: 280px;
+  border: 1px solid red;
 }
+
 
 
 
