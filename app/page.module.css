@@ -31,6 +31,18 @@
   width: 100%;
 }
 
+.fadeIn {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+  /* Adjust the duration and easing */
+}
+
+.swiper_slide {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  /* Adjust the duration and easing */
+}
+
 .swiper__slide {
   background-size: cover;
   background-position: center;

@@ -128,7 +128,7 @@ export default function Home() {
               <SwiperSlide key={index}>
                 <div className={styles.swiper_slide}>
                   <img
-                    class={styles.slide_image}
+                    className={styles.slide_image}
                     src={imageUrl}
                     alt={`Slide ${index}`}
                     loading="lazy"
