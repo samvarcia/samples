@@ -1,13 +1,32 @@
 "use client";
 import Image from "next/image";
+import { useState } from "react";
 import styles from "./page.module.css";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
 import "swiper/css";
-console.log(Swiper);
+// console.log(Swiper);
 export default function Home() {
+  const [images, setImages] = useState([
+    "https://pbs.twimg.com/media/F7YAFlsXUAAimLW?format=png&name=small",
+    "https://pbs.twimg.com/media/F3xRb4FW4AA89rU?format=jpg&name=large",
+    "https://pbs.twimg.com/media/F3lKGzWa4AA57u8?format=jpg&name=large",
+  ]);
+
+  function handleDrop(event) {
+    event.preventDefault();
+    const newImages = Array.from(event.dataTransfer.files).map((file) =>
+      URL.createObjectURL(file)
+    );
+    setImages((prevImages) => [...prevImages, ...newImages]);
+  }
+
+  function handleDragOver(event) {
+    event.preventDefault();
+  }
+
   function b({ swiper: a, extendParams: s, on: o }) {
     s({
       panoramaEffect: {
@@ -55,10 +74,14 @@ export default function Home() {
           });
       });
   }
-  console.log(b);
+  // console.log(b);
   return (
     <div className={styles.app}>
-      <div className={styles.panorama_slider}>
+      <div
+        className={styles.panorama_slider}
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+      >
         <div className={styles.swiper_container}>
           <Swiper
             modules={[b]}
@@ -101,85 +124,18 @@ export default function Home() {
               },
             }}
           >
-            {/* <SwiperSlide>
-              <div className={styles.swiper__slide}>
-                <img
-                  className={styles.slide_image}
-                  src="https://pbs.twimg.com/media/F_Dp5MeWwAAVmUs?format=jpg&name=small"
-                  alt=""
-                />
-              </div>
-            </SwiperSlide> */}
-            <SwiperSlide>
-              <div className={styles.swiper_slide}>
-                <img
-                  class={styles.slide_image}
-                  src="https://pbs.twimg.com/media/F7YAFlsXUAAimLW?format=png&name=small"
-                  alt=""
-                  loading="lazy"
-                />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className={styles.swiper_slide}>
-                <img
-                  class={styles.slide_image}
-                  src="https://pbs.twimg.com/media/F3xRb4FW4AA89rU?format=jpg&name=large"
-                  alt=""
-                  loading="lazy"
-                />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className={styles.swiper_slide}>
-                <img
-                  class={styles.slide_image}
-                  src="https://pbs.twimg.com/media/F3lKGzWa4AA57u8?format=jpg&name=large"
-                  alt=""
-                  loading="lazy"
-                />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className={styles.swiper_slide}>
-                <img
-                  className={styles.slide_image}
-                  src="https://pbs.twimg.com/media/F_Dp5MeWwAAVmUs?format=jpg&name=small"
-                  alt=""
-                  loading="lazy"
-                />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className={styles.swiper_slide}>
-                <img
-                  class={styles.slide_image}
-                  src="https://pbs.twimg.com/media/F7YAFlsXUAAimLW?format=png&name=small"
-                  alt=""
-                  loading="lazy"
-                />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className={styles.swiper_slide}>
-                <img
-                  class={styles.slide_image}
-                  src="https://pbs.twimg.com/media/F3xRb4FW4AA89rU?format=jpg&name=large"
-                  alt=""
-                  loading="lazy"
-                />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className={styles.swiper_slide}>
-                <img
-                  class={styles.slide_image}
-                  src="https://pbs.twimg.com/media/F3lKGzWa4AA57u8?format=jpg&name=large"
-                  alt=""
-                  loading="lazy"
-                />
-              </div>
-            </SwiperSlide>
+            {images.map((imageUrl, index) => (
+              <SwiperSlide key={index}>
+                <div className={styles.swiper_slide}>
+                  <img
+                    class={styles.slide_image}
+                    src={imageUrl}
+                    alt={`Slide ${index}`}
+                    loading="lazy"
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
           </Swiper>
         </div>
       </div>
