@@ -66,7 +66,7 @@ export default function Home() {
             spaceBetween={3}
             centeredSlides={true}
             grabCursor={true}
-            loopAdditionalSlides={1}
+            // loopAdditionalSlides={1}
             loop={true}
             slidesPerView={3}
             panoramaEffect={{ depth: 50, rotate: 45 }}
@@ -101,7 +101,7 @@ export default function Home() {
               },
             }}
           >
-            <SwiperSlide>
+            {/* <SwiperSlide>
               <div className={styles.swiper__slide}>
                 <img
                   className={styles.slide_image}
@@ -109,13 +109,14 @@ export default function Home() {
                   alt=""
                 />
               </div>
-            </SwiperSlide>
+            </SwiperSlide> */}
             <SwiperSlide>
               <div className={styles.swiper_slide}>
                 <img
                   class={styles.slide_image}
                   src="https://pbs.twimg.com/media/F7YAFlsXUAAimLW?format=png&name=small"
                   alt=""
+                  loading="lazy"
                 />
               </div>
             </SwiperSlide>
@@ -125,6 +126,7 @@ export default function Home() {
                   class={styles.slide_image}
                   src="https://pbs.twimg.com/media/F3xRb4FW4AA89rU?format=jpg&name=large"
                   alt=""
+                  loading="lazy"
                 />
               </div>
             </SwiperSlide>
@@ -134,6 +136,7 @@ export default function Home() {
                   class={styles.slide_image}
                   src="https://pbs.twimg.com/media/F3lKGzWa4AA57u8?format=jpg&name=large"
                   alt=""
+                  loading="lazy"
                 />
               </div>
             </SwiperSlide>
@@ -143,6 +146,7 @@ export default function Home() {
                   className={styles.slide_image}
                   src="https://pbs.twimg.com/media/F_Dp5MeWwAAVmUs?format=jpg&name=small"
                   alt=""
+                  loading="lazy"
                 />
               </div>
             </SwiperSlide>
@@ -152,6 +156,7 @@ export default function Home() {
                   class={styles.slide_image}
                   src="https://pbs.twimg.com/media/F7YAFlsXUAAimLW?format=png&name=small"
                   alt=""
+                  loading="lazy"
                 />
               </div>
             </SwiperSlide>
@@ -161,6 +166,7 @@ export default function Home() {
                   class={styles.slide_image}
                   src="https://pbs.twimg.com/media/F3xRb4FW4AA89rU?format=jpg&name=large"
                   alt=""
+                  loading="lazy"
                 />
               </div>
             </SwiperSlide>
@@ -170,6 +176,7 @@ export default function Home() {
                   class={styles.slide_image}
                   src="https://pbs.twimg.com/media/F3lKGzWa4AA57u8?format=jpg&name=large"
                   alt=""
+                  loading="lazy"
                 />
               </div>
             </SwiperSlide>
