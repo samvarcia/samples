@@ -59,119 +59,122 @@ export default function Home() {
   return (
     <div className={styles.app}>
       <div className={styles.panorama_slider}>
-        <Swiper
-          modules={[b]}
-          effect="panorama"
-          spaceBetween={50}
-          loop={true}
-          slidesPerView={3}
-          onSlideChange={() => console.log("slide change")}
-          onSwiper={(swiper) => console.log(swiper)}
-          panoramaEffect={{ depth: 50, rotate: 45 }}
-          breakpoints={{
-            480: {
-              slidesPerView: 2,
-              panoramaEffect: {
-                rotate: 35,
-                depth: 150,
+        <div className={styles.swiper_container}>
+          <Swiper
+            modules={[b]}
+            effect="panorama"
+            spaceBetween={3}
+            centeredSlides={true}
+            grabCursor={true}
+            loopAdditionalSlides={1}
+            loop={true}
+            slidesPerView={3}
+            panoramaEffect={{ depth: 50, rotate: 45 }}
+            breakpoints={{
+              480: {
+                slidesPerView: 2,
+                panoramaEffect: {
+                  rotate: 35,
+                  depth: 150,
+                },
               },
-            },
-            640: {
-              slidesPerView: 3,
-              panoramaEffect: {
-                rotate: 30,
-                depth: 150,
+              640: {
+                slidesPerView: 3,
+                panoramaEffect: {
+                  rotate: 30,
+                  depth: 150,
+                },
               },
-            },
-            1024: {
-              slidesPerView: 4,
-              panoramaEffect: {
-                rotate: 30,
-                depth: 200,
+              1024: {
+                slidesPerView: 4,
+                panoramaEffect: {
+                  rotate: 30,
+                  depth: 200,
+                },
               },
-            },
-            1200: {
-              slidesPerView: 4,
-              panoramaEffect: {
-                rotate: 25,
-                depth: 250,
+              1200: {
+                slidesPerView: 4,
+                panoramaEffect: {
+                  rotate: 25,
+                  depth: 250,
+                },
               },
-            },
-          }}
-        >
-          <SwiperSlide>
-            <div className={styles.swiper_slide}>
-              <img
-                className={styles.slide_image}
-                src="https://pbs.twimg.com/media/F_Dp5MeWwAAVmUs?format=jpg&name=small"
-                alt=""
-              />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className={styles.swiper_slide}>
-              <img
-                class={styles.slide_image}
-                src="https://pbs.twimg.com/media/F7YAFlsXUAAimLW?format=png&name=small"
-                alt=""
-              />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className={styles.swiper_slide}>
-              <img
-                class={styles.slide_image}
-                src="https://pbs.twimg.com/media/F3xRb4FW4AA89rU?format=jpg&name=large"
-                alt=""
-              />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className={styles.swiper_slide}>
-              <img
-                class={styles.slide_image}
-                src="https://pbs.twimg.com/media/F3lKGzWa4AA57u8?format=jpg&name=large"
-                alt=""
-              />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className={styles.swiper_slide}>
-              <img
-                className={styles.slide_image}
-                src="https://pbs.twimg.com/media/F_Dp5MeWwAAVmUs?format=jpg&name=small"
-                alt=""
-              />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className={styles.swiper_slide}>
-              <img
-                class={styles.slide_image}
-                src="https://pbs.twimg.com/media/F7YAFlsXUAAimLW?format=png&name=small"
-                alt=""
-              />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className={styles.swiper_slide}>
-              <img
-                class={styles.slide_image}
-                src="https://pbs.twimg.com/media/F3xRb4FW4AA89rU?format=jpg&name=large"
-                alt=""
-              />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className={styles.swiper_slide}>
-              <img
-                class={styles.slide_image}
-                src="https://pbs.twimg.com/media/F3lKGzWa4AA57u8?format=jpg&name=large"
-                alt=""
-              />
-            </div>
-          </SwiperSlide>
-        </Swiper>
+            }}
+          >
+            <SwiperSlide>
+              <div className={styles.swiper__slide}>
+                <img
+                  className={styles.slide_image}
+                  src="https://pbs.twimg.com/media/F_Dp5MeWwAAVmUs?format=jpg&name=small"
+                  alt=""
+                />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className={styles.swiper_slide}>
+                <img
+                  class={styles.slide_image}
+                  src="https://pbs.twimg.com/media/F7YAFlsXUAAimLW?format=png&name=small"
+                  alt=""
+                />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className={styles.swiper_slide}>
+                <img
+                  class={styles.slide_image}
+                  src="https://pbs.twimg.com/media/F3xRb4FW4AA89rU?format=jpg&name=large"
+                  alt=""
+                />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className={styles.swiper_slide}>
+                <img
+                  class={styles.slide_image}
+                  src="https://pbs.twimg.com/media/F3lKGzWa4AA57u8?format=jpg&name=large"
+                  alt=""
+                />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className={styles.swiper_slide}>
+                <img
+                  className={styles.slide_image}
+                  src="https://pbs.twimg.com/media/F_Dp5MeWwAAVmUs?format=jpg&name=small"
+                  alt=""
+                />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className={styles.swiper_slide}>
+                <img
+                  class={styles.slide_image}
+                  src="https://pbs.twimg.com/media/F7YAFlsXUAAimLW?format=png&name=small"
+                  alt=""
+                />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className={styles.swiper_slide}>
+                <img
+                  class={styles.slide_image}
+                  src="https://pbs.twimg.com/media/F3xRb4FW4AA89rU?format=jpg&name=large"
+                  alt=""
+                />
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className={styles.swiper_slide}>
+                <img
+                  class={styles.slide_image}
+                  src="https://pbs.twimg.com/media/F3lKGzWa4AA57u8?format=jpg&name=large"
+                  alt=""
+                />
+              </div>
+            </SwiperSlide>
+          </Swiper>
+        </div>
       </div>
       <h1>SAMPLES</h1>
     </div>
