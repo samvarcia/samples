@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import styles from "./page.module.css";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -9,11 +9,22 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 // console.log(Swiper);
 export default function Home() {
+  const swiperRef = useRef(null);
+
   const [images, setImages] = useState([
     "https://pbs.twimg.com/media/F7YAFlsXUAAimLW?format=png&name=small",
     "https://pbs.twimg.com/media/F3xRb4FW4AA89rU?format=jpg&name=large",
     "https://pbs.twimg.com/media/F3lKGzWa4AA57u8?format=jpg&name=large",
+    "https://pbs.twimg.com/media/F_3q9FLW0AAh1hx?format=jpg&name=4096x4096",
+    "https://pbs.twimg.com/media/F_pUb85WUAAunEX?format=jpg&name=medium",
+    "https://pbs.twimg.com/media/Fe9uNuPUYAESUyN?format=jpg&name=small",
   ]);
+
+  const [lastSlidePosition, setLastSlidePosition] = useState(0);
+  const [activeSlide, setActiveSlide] = useState(0);
+  function centerSwiper(index) {
+    swiperRef.current.swiper.slideTo(index);
+  }
 
   function handleDrop(event) {
     event.preventDefault();
@@ -22,7 +33,15 @@ export default function Home() {
     );
     setImages((prevImages) => [...prevImages, ...newImages]);
   }
-
+  function handleSlideChange(swiper) {
+    const centeredIndex = swiper.realIndex;
+    const lastSample = swiper.slides.length - 1;
+    const samplesTotal = swiper.slides.length;
+    console.log("NUMBER: " + samplesTotal);
+    console.log("CURRENT: " + centeredIndex);
+    // console.log("LAST: " + lastSample);
+    swiper.slideTo(samplesTotal);
+  }
   function handleDragOver(event) {
     event.preventDefault();
   }
@@ -79,19 +98,25 @@ export default function Home() {
     <div className={styles.app}>
       <div
         className={styles.panorama_slider}
-        onDrop={handleDrop}
+        onDrop={(e) => {
+          handleDrop(e);
+        }}
         onDragOver={handleDragOver}
       >
         <div className={styles.swiper_container}>
           <Swiper
+            ref={swiperRef}
             modules={[b]}
             effect="panorama"
             spaceBetween={3}
+            // onSlideChange={(swiper) => handleSlideChange(swiper)}
             centeredSlides={true}
             grabCursor={true}
+            onUpdate={(swiper) => handleSlideChange(swiper)}
             // loopAdditionalSlides={1}
             loop={true}
             slidesPerView={3}
+            initialSlide={0}
             panoramaEffect={{ depth: 50, rotate: 45 }}
             breakpoints={{
               480: {
