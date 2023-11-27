@@ -32,15 +32,18 @@ export default function Home() {
       URL.createObjectURL(file)
     );
     setImages((prevImages) => [...prevImages, ...newImages]);
+    console.log("IMAGES NEW NUMBER " + images.length);
   }
   function handleSlideChange(swiper) {
+    const imagesTotal = images.length;
+    const centeredIndex = imagesTotal - 1; // Index of the last image
+    swiper.slideToLoop(centeredIndex);
+  }
+  function handleSlideMove(swiper) {
     const centeredIndex = swiper.realIndex;
-    const lastSample = swiper.slides.length - 1;
-    const samplesTotal = swiper.slides.length;
-    console.log("NUMBER: " + samplesTotal);
-    console.log("CURRENT: " + centeredIndex);
-    // console.log("LAST: " + lastSample);
-    swiper.slideTo(samplesTotal);
+    const samplesTotal = images.length;
+
+    console.log("CURRENT & TOTAL: " + centeredIndex + " " + samplesTotal);
   }
   function handleDragOver(event) {
     event.preventDefault();
@@ -109,7 +112,7 @@ export default function Home() {
             modules={[b]}
             effect="panorama"
             spaceBetween={3}
-            // onSlideChange={(swiper) => handleSlideChange(swiper)}
+            onSlideChange={(swiper) => handleSlideMove(swiper)}
             centeredSlides={true}
             grabCursor={true}
             onUpdate={(swiper) => handleSlideChange(swiper)}
