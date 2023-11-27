@@ -4,12 +4,14 @@ import { useState, useRef, useEffect } from "react";
 import styles from "./page.module.css";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
+import SampleModal from "./components/SampleModal";
 
 // Import Swiper styles
 import "swiper/css";
 // console.log(Swiper);
 export default function Home() {
   const swiperRef = useRef(null);
+  const [modalImageUrl, setModalImageUrl] = useState(null);
 
   const [images, setImages] = useState([
     "https://pbs.twimg.com/media/F7YAFlsXUAAimLW?format=png&name=small",
@@ -43,12 +45,18 @@ export default function Home() {
     const centeredIndex = swiper.realIndex;
     const samplesTotal = images.length;
 
-    console.log("CURRENT & TOTAL: " + centeredIndex + " " + samplesTotal);
+    // console.log("CURRENT & TOTAL: " + centeredIndex + " " + samplesTotal);
   }
   function handleDragOver(event) {
     event.preventDefault();
   }
+  const openModal = (imageUrl) => {
+    setModalImageUrl(imageUrl);
+  };
 
+  const closeModal = () => {
+    setModalImageUrl(null);
+  };
   function b({ swiper: a, extendParams: s, on: o }) {
     s({
       panoramaEffect: {
@@ -99,6 +107,9 @@ export default function Home() {
   // console.log(b);
   return (
     <div className={styles.app}>
+      {modalImageUrl && (
+        <SampleModal imageUrl={modalImageUrl} onClose={closeModal} />
+      )}
       <div
         className={styles.panorama_slider}
         onDrop={(e) => {
@@ -112,9 +123,13 @@ export default function Home() {
             modules={[b]}
             effect="panorama"
             spaceBetween={3}
+            // onSlideClick={(swiper) => {
+            //   console.log("Slide clicked!", images[swiper.activeIndex]);
+            //   openModal(images[swiper.activeIndex]);
+            // }}
             onSlideChange={(swiper) => handleSlideMove(swiper)}
             centeredSlides={true}
-            grabCursor={true}
+            // grabCursor={true}
             onUpdate={(swiper) => handleSlideChange(swiper)}
             // loopAdditionalSlides={1}
             loop={true}
@@ -153,7 +168,7 @@ export default function Home() {
             }}
           >
             {images.map((imageUrl, index) => (
-              <SwiperSlide key={index}>
+              <SwiperSlide key={index} onClick={() => openModal(imageUrl)}>
                 <div className={styles.swiper_slide}>
                   <img
                     className={styles.slide_image}
