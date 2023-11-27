@@ -136,7 +136,7 @@ export default function Home() {
             loop={true}
             slidesPerView={3}
             initialSlide={0}
-            panoramaEffect={{ depth: 150, rotate: 45 }}
+            panoramaEffect={{ depth: 180, rotate: 45 }}
             breakpoints={{
               480: {
                 slidesPerView: 2,
@@ -183,7 +183,14 @@ export default function Home() {
           </Swiper>
         </div>
       </div>
-      <h1>SAMPLES</h1>
+      <Image
+        src="/LOGO.svg"
+        width={600}
+        height={126.07}
+        alt="SAMPLES"
+        className={styles.logo}
+      />
+      {/* <img className={styles.logo} src={samplesLogo} alt="SAMPLES" /> */}
     </div>
   );
 }

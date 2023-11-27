@@ -54,6 +54,11 @@
   pointer-events: none;
 }
 
+.logo {
+  width: 200px;
+  height: auto;
+  margin-top: 5%;
+}
 
 
 /* Enable hover only on non-touch devices */
@@ -159,9 +164,9 @@
     filter: invert(1);
   }
 
-  .logo {
+  /* .logo {
     filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);
-  }
+  } */
 }
 
 @keyframes rotate {
