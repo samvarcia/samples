@@ -130,12 +130,13 @@ export default function Home() {
             onSlideChange={(swiper) => handleSlideMove(swiper)}
             centeredSlides={true}
             // grabCursor={true}
+            // height={310}
             onUpdate={(swiper) => handleSlideChange(swiper)}
             // loopAdditionalSlides={1}
             loop={true}
             slidesPerView={3}
             initialSlide={0}
-            panoramaEffect={{ depth: 50, rotate: 45 }}
+            panoramaEffect={{ depth: 150, rotate: 45 }}
             breakpoints={{
               480: {
                 slidesPerView: 2,
