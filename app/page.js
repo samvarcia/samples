@@ -28,14 +28,36 @@ export default function Home() {
     swiperRef.current.swiper.slideTo(index);
   }
 
+  // function handleDrop(event) {
+  //   event.preventDefault();
+  //   const newImages = Array.from(event.dataTransfer.files).map((file) =>
+  //     URL.createObjectURL(file)
+  //   );
+  //   setImages((prevImages) => [...prevImages, ...newImages]);
+  // }
+
   function handleDrop(event) {
     event.preventDefault();
-    const newImages = Array.from(event.dataTransfer.files).map((file) =>
+    const newMedia = Array.from(event.dataTransfer.files).map((file) =>
       URL.createObjectURL(file)
     );
-    setImages((prevImages) => [...prevImages, ...newImages]);
-    console.log("IMAGES NEW NUMBER " + images.length);
+
+    // Check if dropped content is a YouTube link
+    const youtubeLink = event.dataTransfer.getData("text/plain");
+    if (youtubeLink.includes("youtube.com")) {
+      // If it's a YouTube link, extract the video ID and create the embedded player URL
+      const videoId = youtubeLink.split("v=")[1].split("&")[0];
+      const iframeObject = {
+        type: "iframe",
+        src: `https://www.youtube.com/embed/${videoId}`,
+      };
+      newMedia.push(iframeObject);
+      console.log(youtubeLink);
+    }
+
+    setImages((prevImages) => [...prevImages, ...newMedia]);
   }
+
   function handleSlideChange(swiper) {
     const imagesTotal = images.length;
     const centeredIndex = imagesTotal - 1; // Index of the last image
@@ -123,16 +145,9 @@ export default function Home() {
             modules={[b]}
             effect="panorama"
             spaceBetween={3}
-            // onSlideClick={(swiper) => {
-            //   console.log("Slide clicked!", images[swiper.activeIndex]);
-            //   openModal(images[swiper.activeIndex]);
-            // }}
             onSlideChange={(swiper) => handleSlideMove(swiper)}
             centeredSlides={true}
-            // grabCursor={true}
-            // height={310}
             onUpdate={(swiper) => handleSlideChange(swiper)}
-            // loopAdditionalSlides={1}
             loop={true}
             slidesPerView={3}
             initialSlide={0}
@@ -168,7 +183,7 @@ export default function Home() {
               },
             }}
           >
-            {images.map((imageUrl, index) => (
+            {/* {images.map((imageUrl, index) => (
               <SwiperSlide key={index} onClick={() => openModal(imageUrl)}>
                 <div className={styles.swiper_slide}>
                   <img
@@ -179,12 +194,39 @@ export default function Home() {
                   />
                 </div>
               </SwiperSlide>
+            ))} */}
+            {images.map((media, index) => (
+              <SwiperSlide key={index} onClick={() => openModal(media)}>
+                <div className={styles.swiper_slide}>
+                  {media.type === "iframe" ? (
+                    // If it's an iframe (YouTube link), render it directly
+                    <div className={styles.slide_image}>
+                      <iframe
+                        src={media.src}
+                        width="100%"
+                        height="100%"
+                        title="YouTube video player"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                      ></iframe>
+                    </div>
+                  ) : (
+                    // If it's an image, render the image
+                    <img
+                      className={styles.slide_image}
+                      src={media}
+                      alt={`Slide ${index}`}
+                      loading="lazy"
+                    />
+                  )}
+                </div>
+              </SwiperSlide>
             ))}
           </Swiper>
         </div>
       </div>
       <Image
-        src="/LOGO.svg"
+        src="/LOGOALT.svg"
         width={600}
         height={126.07}
         alt="SAMPLES"
