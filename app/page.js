@@ -82,8 +82,8 @@ export default function Home() {
   function b({ swiper: a, extendParams: s, on: o }) {
     s({
       panoramaEffect: {
-        depth: 200,
-        rotate: 30,
+        depth: 550,
+        rotate: 445,
       },
     }),
       o("beforeInit", () => {
@@ -139,19 +139,22 @@ export default function Home() {
         }}
         onDragOver={handleDragOver}
       >
-        <div className={styles.swiper_container}>
+        <div className={styles.swiper_wrapper}>
           <Swiper
             ref={swiperRef}
             modules={[b]}
+            // height={700}
             effect="panorama"
-            spaceBetween={3}
+            spaceBetween={5}
             onSlideChange={(swiper) => handleSlideMove(swiper)}
             centeredSlides={true}
             onUpdate={(swiper) => handleSlideChange(swiper)}
             loop={true}
-            slidesPerView={3}
+            slidesPerView={2}
+            // height={500}
+            style={{ height: "100%", border: "1px solid red" }}
             initialSlide={0}
-            panoramaEffect={{ depth: 180, rotate: 45 }}
+            panoramaeffect={{ depth: 250, rotate: 25 }}
             breakpoints={{
               480: {
                 slidesPerView: 2,
@@ -200,13 +203,14 @@ export default function Home() {
                 <div className={styles.swiper_slide}>
                   {media.type === "iframe" ? (
                     // If it's an iframe (YouTube link), render it directly
-                    <div className={styles.slide_image}>
+                    <div className={styles.slide_video}>
                       <iframe
                         src={media.src}
                         width="100%"
                         height="100%"
                         title="YouTube video player"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        style={{ border: "none" }}
+                        // allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share"
                         allowfullscreen
                       ></iframe>
                     </div>
