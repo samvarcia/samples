@@ -11,7 +11,7 @@ import "swiper/css";
 // console.log(Swiper);
 export default function Home() {
   const swiperRef = useRef(null);
-  const [modalImageUrl, setModalImageUrl] = useState(null);
+  const [modalSampleUrl, setModalSampleUrl] = useState(null);
 
   const [images, setImages] = useState([
     "https://pbs.twimg.com/media/F7YAFlsXUAAimLW?format=png&name=small",
@@ -72,12 +72,12 @@ export default function Home() {
   function handleDragOver(event) {
     event.preventDefault();
   }
-  const openModal = (imageUrl) => {
-    setModalImageUrl(imageUrl);
+  const openModal = (media) => {
+    setModalSampleUrl(media);
   };
 
   const closeModal = () => {
-    setModalImageUrl(null);
+    setModalSampleUrl(null);
   };
   function b({ swiper: a, extendParams: s, on: o }) {
     s({
@@ -129,8 +129,8 @@ export default function Home() {
   // console.log(b);
   return (
     <div className={styles.app}>
-      {modalImageUrl && (
-        <SampleModal imageUrl={modalImageUrl} onClose={closeModal} />
+      {modalSampleUrl && (
+        <SampleModal media={modalSampleUrl} onClose={closeModal} />
       )}
       <div
         className={styles.panorama_slider}
@@ -145,14 +145,14 @@ export default function Home() {
             modules={[b]}
             // height={700}
             effect="panorama"
-            spaceBetween={5}
+            spaceBetween={15}
             onSlideChange={(swiper) => handleSlideMove(swiper)}
             centeredSlides={true}
             onUpdate={(swiper) => handleSlideChange(swiper)}
             loop={true}
-            slidesPerView={2}
+            slidesPerView={3.5}
             // height={500}
-            style={{ height: "100%", border: "1px solid red" }}
+            style={{ height: "100%", padding: "50px 0px" }}
             initialSlide={0}
             panoramaeffect={{ depth: 250, rotate: 25 }}
             breakpoints={{
