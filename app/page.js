@@ -6,7 +6,10 @@ import styles from "./page.module.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SampleModal from "./components/SampleModal";
 
+import { Keyboard, Mousewheel } from "swiper/modules";
 // Import Swiper styles
+import "swiper/css/keyboard";
+import "swiper/css/mousewheel";
 import "swiper/css";
 // console.log(Swiper);
 export default function Home() {
@@ -121,7 +124,14 @@ export default function Home() {
         <div className={styles.swiper_wrapper}>
           <Swiper
             ref={swiperRef}
-            modules={[b]}
+            modules={[b, Keyboard, Mousewheel]}
+            keyboard={{
+              enabled: true,
+              onlyInViewport: false,
+            }}
+            mousewheel={{
+              enabled: true,
+            }}
             // height={700}
             effect="panorama"
             spaceBetween={0}
