@@ -22,20 +22,6 @@ export default function Home() {
     "https://pbs.twimg.com/media/Fe9uNuPUYAESUyN?format=jpg&name=small",
   ]);
 
-  const [lastSlidePosition, setLastSlidePosition] = useState(0);
-  const [activeSlide, setActiveSlide] = useState(0);
-  function centerSwiper(index) {
-    swiperRef.current.swiper.slideTo(index);
-  }
-
-  // function handleDrop(event) {
-  //   event.preventDefault();
-  //   const newImages = Array.from(event.dataTransfer.files).map((file) =>
-  //     URL.createObjectURL(file)
-  //   );
-  //   setImages((prevImages) => [...prevImages, ...newImages]);
-  // }
-
   function handleDrop(event) {
     event.preventDefault();
     const newMedia = Array.from(event.dataTransfer.files).map((file) =>
@@ -52,7 +38,6 @@ export default function Home() {
         src: `https://www.youtube.com/embed/${videoId}`,
       };
       newMedia.push(iframeObject);
-      console.log(youtubeLink);
     }
 
     setImages((prevImages) => [...prevImages, ...newMedia]);
@@ -62,12 +47,6 @@ export default function Home() {
     const imagesTotal = images.length;
     const centeredIndex = imagesTotal - 1; // Index of the last image
     swiper.slideToLoop(centeredIndex);
-  }
-  function handleSlideMove(swiper) {
-    const centeredIndex = swiper.realIndex;
-    const samplesTotal = images.length;
-
-    // console.log("CURRENT & TOTAL: " + centeredIndex + " " + samplesTotal);
   }
   function handleDragOver(event) {
     event.preventDefault();
@@ -145,8 +124,7 @@ export default function Home() {
             modules={[b]}
             // height={700}
             effect="panorama"
-            spaceBetween={15}
-            onSlideChange={(swiper) => handleSlideMove(swiper)}
+            spaceBetween={0}
             centeredSlides={true}
             onUpdate={(swiper) => handleSlideChange(swiper)}
             loop={true}
@@ -154,7 +132,7 @@ export default function Home() {
             // height={500}
             style={{ height: "100%", padding: "50px 0px" }}
             initialSlide={0}
-            panoramaeffect={{ depth: 250, rotate: 25 }}
+            panoramaeffect={{ depth: 350, rotate: 25 }}
             breakpoints={{
               480: {
                 slidesPerView: 2,

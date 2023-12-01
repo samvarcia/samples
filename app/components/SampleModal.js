@@ -11,10 +11,7 @@ export default function SampleModal({ media, onClose }) {
       className={`${styles.overlay} ${media ? styles.active : ""}`}
       onClick={onClose}
     >
-      <div
-        className={`${styles.modal} ${media ? styles.active : ""}`}
-        onClick={handleClick}
-      >
+      <div className={`${styles.modal} ${media ? styles.active : ""}`}>
         {media && media.type === "iframe" ? (
           // Wrap the iframe in a container and attach the click event to the container
           <div className={styles.fullVideoContainer}>
