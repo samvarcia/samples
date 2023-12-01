@@ -1,5 +1,5 @@
 import styles from "./SampleModal.module.css";
-
+import { motion } from "framer-motion";
 export default function SampleModal({ media, onClose }) {
   const handleClick = (event) => {
     // Prevent the click event from propagating to the underlying iframe
@@ -11,7 +11,13 @@ export default function SampleModal({ media, onClose }) {
       className={`${styles.overlay} ${media ? styles.active : ""}`}
       onClick={onClose}
     >
-      <div className={`${styles.modal} ${media ? styles.active : ""}`}>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className={`${styles.modal} ${media ? styles.active : ""}`}
+      >
         {media && media.type === "iframe" ? (
           // Wrap the iframe in a container and attach the click event to the container
           <div className={styles.fullVideoContainer}>
@@ -28,7 +34,7 @@ export default function SampleModal({ media, onClose }) {
           // If it's an image, render the image
           <img src={media} alt="Full View" className={styles.fullImage} />
         )}
-      </div>
+      </motion.div>
     </div>
   );
 }

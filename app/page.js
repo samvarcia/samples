@@ -5,7 +5,7 @@ import styles from "./page.module.css";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
 import SampleModal from "./components/SampleModal";
-
+import { motion } from "framer-motion";
 import { Keyboard, Mousewheel } from "swiper/modules";
 // Import Swiper styles
 import "swiper/css/keyboard";
@@ -188,7 +188,12 @@ export default function Home() {
             ))} */}
             {images.map((media, index) => (
               <SwiperSlide key={index} onClick={() => openModal(media)}>
-                <div className={styles.swiper_slide}>
+                <motion.div
+                  className={styles.swiper_slide}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6 }}
+                >
                   {media.type === "iframe" ? (
                     // If it's an iframe (YouTube link), render it directly
                     <div className={styles.slide_video}>
@@ -211,7 +216,7 @@ export default function Home() {
                       loading="lazy"
                     />
                   )}
-                </div>
+                </motion.div>
               </SwiperSlide>
             ))}
           </Swiper>
