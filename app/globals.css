@@ -5,7 +5,9 @@
     'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
     'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
 
-  --background: #090909;
+  /* --background: #090909; */
+  --background: radial-gradient(107.23% 107.23% at 50% -1.93%, rgba(5, 11, 30, 0.69) 37.16%, rgba(15, 25, 73, 0.69) 65.59%, rgba(27, 36, 92, 0.69) 85.93%, rgba(95, 75, 100, 0.69) 100%);
+  ;
 
   --primary-glow: conic-gradient(from 180deg at 50% 50%,
       #16abff33 0deg,

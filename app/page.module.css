@@ -1,10 +1,11 @@
 .app {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   /* padding: 6rem; */
   min-height: 100vh;
+  /* border: 1px solid blue; */
 }
 
 .panorama_slider {
@@ -17,10 +18,9 @@
 }
 
 .swiper_wrapper {
-  perspective: 1200px;
-  /* border: 1px solid blue; */
+  perspective: 1500px;
   transform-style: preserve-3d;
-  height: 500px;
+  height: 400px;
 }
 
 .swiper_slide {
@@ -51,9 +51,10 @@
 }
 
 .logo {
-  width: 100px;
+  width: 150px;
   height: auto;
-  margin-top: 2%;
+  /* margin-top: 2%; */
+  align-self: flex-end;
 }
 
 

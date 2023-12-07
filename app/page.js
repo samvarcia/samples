@@ -134,7 +134,7 @@ export default function Home() {
             }}
             // height={700}
             effect="panorama"
-            spaceBetween={0}
+            // spaceBetween={0}
             centeredSlides={true}
             onUpdate={(swiper) => handleSlideChange(swiper)}
             loop={true}
@@ -192,7 +192,7 @@ export default function Home() {
                   className={styles.swiper_slide}
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6 }}
+                  transition={{ duration: 1.6 }}
                 >
                   {media.type === "iframe" ? (
                     // If it's an iframe (YouTube link), render it directly
@@ -222,13 +222,19 @@ export default function Home() {
           </Swiper>
         </div>
       </div>
-      <Image
-        src="/LOGOALT.svg"
-        width={600}
-        height={126.07}
-        alt="SAMPLES"
-        className={styles.logo}
-      />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 2.5 }}
+      >
+        <Image
+          src="/SAMPLESLOGO.svg"
+          width={600}
+          height={126.07}
+          alt="SAMPLES"
+          className={styles.logo}
+        />
+      </motion.div>
       {/* <img className={styles.logo} src={samplesLogo} alt="SAMPLES" /> */}
     </div>
   );
