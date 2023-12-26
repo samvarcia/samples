@@ -13,7 +13,6 @@
   /* Set a high z-index value to place it above other elements */
   transition: background 0.3s ease;
   /* Smooth background transition */
-
 }
 
 .modal {

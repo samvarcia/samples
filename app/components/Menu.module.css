@@ -1,0 +1,22 @@
+.logo {
+  width: 150px;
+  height: auto;
+  /* margin-top: 2%; */
+  align-self: flex-end;
+}
+
+.menu {
+  /* border: 1px solid red; */
+  width: 500px;
+  color: #CFD3D6;
+}
+
+.menu_content {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.menu_content p {
+  cursor: pointer;
+}

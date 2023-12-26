@@ -50,12 +50,7 @@
   height: 100%;
 }
 
-.logo {
-  width: 150px;
-  height: auto;
-  /* margin-top: 2%; */
-  align-self: flex-end;
-}
+
 
 
 /* Enable hover only on non-touch devices */
