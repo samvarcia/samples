@@ -7,15 +7,19 @@ export default function SampleModal({ media, onClose }) {
   };
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.9 }}
       className={`${styles.overlay} ${media ? styles.active : ""}`}
       onClick={onClose}
     >
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.9 }}
+        // initial={{ opacity: 0 }}
+        // animate={{ opacity: 1 }}
+        // exit={{ opacity: 0 }}
+        // transition={{ duration: 1.2 }}
         className={`${styles.modal} ${media ? styles.active : ""}`}
       >
         {media && media.type === "iframe" ? (
@@ -35,6 +39,6 @@ export default function SampleModal({ media, onClose }) {
           <img src={media} alt="Full View" className={styles.fullImage} />
         )}
       </motion.div>
-    </div>
+    </motion.div>
   );
 }

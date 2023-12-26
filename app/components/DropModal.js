@@ -6,15 +6,21 @@ import { motion } from "framer-motion";
 
 export default function DropModal({ onClose, onDropMedia }) {
   const [mediaInput, setMediaInput] = useState("");
+  const [isDraggingOver, setIsDraggingOver] = useState(false);
+
   function handleDragOver(event) {
     event.preventDefault();
+    setIsDraggingOver(true);
+  }
+  function handleDragLeave() {
+    setIsDraggingOver(false);
   }
   function handleDrop(event) {
     event.preventDefault();
     const newMedia = Array.from(event.dataTransfer.files).map((file) =>
       URL.createObjectURL(file)
     );
-    console.log(newMedia);
+    setIsDraggingOver(false);
 
     // Check if dropped content is a YouTube link
     const youtubeLink = event.dataTransfer.getData("text/plain");
@@ -37,8 +43,11 @@ export default function DropModal({ onClose, onDropMedia }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
+        onDragLeave={handleDragLeave}
         transition={{ duration: 0.5 }}
-        className={styles.dropModal}
+        className={`${styles.dropModal} ${
+          isDraggingOver ? styles.blueBackground : ""
+        }`}
         onDrop={(e) => {
           handleDrop(e);
         }}
