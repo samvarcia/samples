@@ -164,6 +164,14 @@ export default function Home() {
                       alt={`Slide ${index}`}
                       loading="lazy"
                     />
+                  ) : media.url ? (
+                    // For other media types, render the image
+                    <img
+                      className={styles.slide_image}
+                      src={media.url}
+                      alt={`Slide ${index}`}
+                      loading="lazy"
+                    />
                   ) : (
                     // For other media types, render the image
                     <img

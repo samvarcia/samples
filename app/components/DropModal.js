@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import styles from "./DropModal.module.css"; // Add appropriate styling
 import { motion } from "framer-motion";
+import mql from "@microlink/mql";
 
 export default function DropModal({ onClose, onDropMedia, setImages }) {
   const [mediaInput, setMediaInput] = useState("");
@@ -15,7 +16,7 @@ export default function DropModal({ onClose, onDropMedia, setImages }) {
   function handleDragLeave() {
     setIsDraggingOver(false);
   }
-  function handleDrop(event) {
+  async function handleDrop(event) {
     event.preventDefault();
     const newMedia = Array.from(event.dataTransfer.files).map((file) =>
       URL.createObjectURL(file)
@@ -33,8 +34,28 @@ export default function DropModal({ onClose, onDropMedia, setImages }) {
         ...prevImages,
         { link: youtubeLink, thumbnail: thumbnailUrl },
       ]);
+    } else if (!/(png|jpg)/.test(youtubeLink)) {
+      try {
+        const { status, data } = await mql(youtubeLink, { screenshot: true });
+
+        // Check if the Microlink data contains a screenshot
+        if (status === "success" && data.screenshot) {
+          // If yes, add the screenshot URL to the images state
+          setImages((prevImages) => [
+            ...prevImages,
+            {
+              url: data.screenshot.url,
+            },
+          ]);
+          console.log(url);
+        } else {
+          // If not, log a warning
+          console.warn("Microlink data does not contain a screenshot:", data);
+        }
+      } catch (error) {
+        console.error("Error fetching Microlink data:", error);
+      }
     } else {
-      // For other media types, simply add them to the images state
       setImages((prevImages) => [...prevImages, ...newMedia]);
     }
   }
