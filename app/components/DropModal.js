@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import styles from "./DropModal.module.css"; // Add appropriate styling
 import { motion } from "framer-motion";
 
-export default function DropModal({ onClose, onDropMedia }) {
+export default function DropModal({ onClose, onDropMedia, setImages }) {
   const [mediaInput, setMediaInput] = useState("");
   const [isDraggingOver, setIsDraggingOver] = useState(false);
 
@@ -25,16 +25,18 @@ export default function DropModal({ onClose, onDropMedia }) {
     // Check if dropped content is a YouTube link
     const youtubeLink = event.dataTransfer.getData("text/plain");
     if (youtubeLink.includes("youtube.com")) {
-      // If it's a YouTube link, extract the video ID and create the embedded player URL
+      // If it's a YouTube link, extract the video ID and add both link and thumbnail
       const videoId = youtubeLink.split("v=")[1].split("&")[0];
-      const iframeObject = {
-        type: "iframe",
-        src: `https://www.youtube.com/embed/${videoId}`,
-      };
-      newMedia.push(iframeObject);
-    }
+      const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
-    onDropMedia(newMedia);
+      setImages((prevImages) => [
+        ...prevImages,
+        { link: youtubeLink, thumbnail: thumbnailUrl },
+      ]);
+    } else {
+      // For other media types, simply add them to the images state
+      setImages((prevImages) => [...prevImages, ...newMedia]);
+    }
   }
 
   return (

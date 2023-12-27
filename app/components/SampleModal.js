@@ -6,6 +6,11 @@ export default function SampleModal({ media, onClose }) {
     event.stopPropagation();
   };
 
+  console.log("MEDIA: " + media);
+  function getYouTubeVideoId(url) {
+    const videoId = url.split("v=")[1].split("&")[0];
+    return videoId;
+  }
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -22,11 +27,13 @@ export default function SampleModal({ media, onClose }) {
         // transition={{ duration: 1.2 }}
         className={`${styles.modal} ${media ? styles.active : ""}`}
       >
-        {media && media.type === "iframe" ? (
-          // Wrap the iframe in a container and attach the click event to the container
+        {media && media.link && media.link.includes("youtube.com") ? (
+          // If it's a YouTube link, render the video iframe
           <div className={styles.fullVideoContainer}>
             <iframe
-              src={media.src}
+              src={`https://www.youtube.com/embed/${getYouTubeVideoId(
+                media.link
+              )}`}
               width="100%"
               height="100%"
               title="YouTube video player"
@@ -35,7 +42,7 @@ export default function SampleModal({ media, onClose }) {
             ></iframe>
           </div>
         ) : (
-          // If it's an image, render the image
+          // For other media types or non-YouTube links, render the image
           <img src={media} alt="Full View" className={styles.fullImage} />
         )}
       </motion.div>

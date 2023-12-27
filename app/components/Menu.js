@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import DropModal from "./DropModal";
-export default function Menu({ onDropMedia }) {
+export default function Menu({ onDropMedia, setImages }) {
   const [isDropModalOpen, setIsDropModalOpen] = useState(false);
 
   const openDropModal = () => {
@@ -41,7 +41,11 @@ export default function Menu({ onDropMedia }) {
       </div>
       {/* Render the DropModal component conditionally */}
       {isDropModalOpen && (
-        <DropModal onClose={closeDropModal} onDropMedia={handleDropMedia} />
+        <DropModal
+          onClose={closeDropModal}
+          onDropMedia={handleDropMedia}
+          setImages={setImages}
+        />
       )}
     </motion.div>
   );

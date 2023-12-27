@@ -35,6 +35,12 @@
   max-width: 100%;
 }
 
+.fullVideoContainer {
+  height: 100%;
+  width: 100%;
+  /* width: 700px; */
+}
+
 .overlay.active {
   background: rgba(0, 0, 0, 0.5);
   /* Set the background when the modal is active */

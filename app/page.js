@@ -29,27 +29,6 @@ export default function Home() {
     setImages((prevImages) => [...prevImages, media]);
   };
 
-  // function handleDrop(event) {
-  //   event.preventDefault();
-  //   const newMedia = Array.from(event.dataTransfer.files).map((file) =>
-  //     URL.createObjectURL(file)
-  //   );
-
-  //   // Check if dropped content is a YouTube link
-  //   const youtubeLink = event.dataTransfer.getData("text/plain");
-  //   if (youtubeLink.includes("youtube.com")) {
-  //     // If it's a YouTube link, extract the video ID and create the embedded player URL
-  //     const videoId = youtubeLink.split("v=")[1].split("&")[0];
-  //     const iframeObject = {
-  //       type: "iframe",
-  //       src: `https://www.youtube.com/embed/${videoId}`,
-  //     };
-  //     newMedia.push(iframeObject);
-  //   }
-
-  //   setImages((prevImages) => [...prevImages, ...newMedia]);
-  // }
-
   function handleSlideChange(swiper) {
     const imagesTotal = images.length;
     const centeredIndex = imagesTotal - 1; // Index of the last image
@@ -110,7 +89,6 @@ export default function Home() {
           });
       });
   }
-  // console.log(b);
   return (
     <div className={styles.app}>
       {modalSampleUrl && (
@@ -178,21 +156,16 @@ export default function Home() {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 1.6 }}
                 >
-                  {media.type === "iframe" ? (
-                    // If it's an iframe (YouTube link), render it directly
-                    <div className={styles.slide_video}>
-                      <iframe
-                        src={media.src}
-                        width="100%"
-                        height="100%"
-                        title="YouTube video player"
-                        style={{ border: "none" }}
-                        // allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen
-                      ></iframe>
-                    </div>
+                  {media.link && media.thumbnail ? (
+                    // If it's a YouTube link, render the thumbnail
+                    <img
+                      className={styles.slide_image}
+                      src={media.thumbnail}
+                      alt={`Slide ${index}`}
+                      loading="lazy"
+                    />
                   ) : (
-                    // If it's an image, render the image
+                    // For other media types, render the image
                     <img
                       className={styles.slide_image}
                       src={media}
@@ -206,7 +179,7 @@ export default function Home() {
           </Swiper>
         </div>
       </div>
-      <Menu onDropMedia={handleDropMedia} />
+      <Menu onDropMedia={handleDropMedia} setImages={setImages} />
     </div>
   );
 }
