@@ -11,6 +11,7 @@ export default function SampleModal({ media, onClose }) {
     const videoId = url.split("v=")[1].split("&")[0];
     return videoId;
   }
+  console.log(media.link);
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -27,7 +28,9 @@ export default function SampleModal({ media, onClose }) {
         // transition={{ duration: 1.2 }}
         className={`${styles.modal} ${media ? styles.active : ""}`}
       >
-        {media && media.link && media.link.includes("youtube.com") ? (
+        {media &&
+        typeof media.link === "string" &&
+        media.link.includes("youtube.com") ? (
           // If it's a YouTube link, render the video iframe
           <div className={styles.fullVideoContainer}>
             <iframe
