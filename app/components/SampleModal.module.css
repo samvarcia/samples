@@ -35,6 +35,37 @@
   max-width: 100%;
 }
 
+.fullWebsiteView {
+  /* border: 1px solid red; */
+  /* padding: 50px; */
+  max-height: 100vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 1;
+  position: relative;
+  /* Ensure that positioning works as expected */
+}
+
+.fullWebsiteView .websiteUrl {
+  text-align: center;
+  z-index: 2;
+  position: absolute;
+  /* Position the websiteUrl relative to the .fullWebsiteView */
+  bottom: 0px;
+  /* Adjust the position as needed */
+  /* left: 10px; */
+  /* Adjust the position as needed */
+  background: rgba(0, 0, 0, 0.8);
+  width: 100%;
+}
+
+.fullImageWeb {
+  height: 700px;
+  max-width: 100%;
+}
+
 .fullVideoContainer {
   height: 100%;
   width: 100%;

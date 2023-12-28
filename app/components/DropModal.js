@@ -45,6 +45,7 @@ export default function DropModal({ onClose, onDropMedia, setImages }) {
             ...prevImages,
             {
               url: data.screenshot.url,
+              websiteLink: youtubeLink,
             },
           ]);
           console.log(url);

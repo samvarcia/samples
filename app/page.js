@@ -16,7 +16,14 @@ import "swiper/css";
 export default function Home() {
   const swiperRef = useRef(null);
   const [modalSampleUrl, setModalSampleUrl] = useState(null);
+  const [isDropModalOpen, setIsDropModalOpen] = useState(false);
+  const openDropModal = () => {
+    setIsDropModalOpen(true);
+  };
 
+  const closeDropModal = () => {
+    setIsDropModalOpen(false);
+  };
   const [images, setImages] = useState([
     "https://pbs.twimg.com/media/F7YAFlsXUAAimLW?format=png&name=small",
     "https://pbs.twimg.com/media/F3xRb4FW4AA89rU?format=jpg&name=large",
@@ -90,7 +97,14 @@ export default function Home() {
       });
   }
   return (
-    <div className={styles.app}>
+    <div className={styles.app} onDrop={() => openDropModal()}>
+      {isDropModalOpen && (
+        <DropModal
+          onClose={closeDropModal}
+          onDropMedia={handleDropMedia}
+          setImages={setImages}
+        />
+      )}
       {modalSampleUrl && (
         <SampleModal
           media={modalSampleUrl}

@@ -44,6 +44,21 @@ export default function SampleModal({ media, onClose }) {
               allowfullscreen
             ></iframe>
           </div>
+        ) : media.url ? (
+          <div className={styles.fullWebsiteView}>
+            <a target="_blank" href={media.websiteLink}>
+              <img
+                src={media.url}
+                alt="Full View"
+                className={styles.fullImageWeb}
+              />
+            </a>
+            <div className={styles.websiteUrl}>
+              <a target="_blank" href={media.websiteLink}>
+                {media.websiteLink}
+              </a>
+            </div>
+          </div>
         ) : (
           // For other media types or non-YouTube links, render the image
           <img src={media} alt="Full View" className={styles.fullImage} />
