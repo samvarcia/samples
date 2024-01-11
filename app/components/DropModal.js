@@ -24,19 +24,22 @@ export default function DropModal({ onClose, onDropMedia, setImages }) {
     setIsDraggingOver(false);
 
     // Check if dropped content is a YouTube link
-    const youtubeLink = event.dataTransfer.getData("text/plain");
-    if (youtubeLink.includes("youtube.com")) {
+    const contentLink = event.dataTransfer.getData("text/plain");
+    if (newMedia.length > 0) {
+      setImages((prevImages) => [...prevImages, ...newMedia]);
+    }
+    if (contentLink.includes("youtube.com")) {
       // If it's a YouTube link, extract the video ID and add both link and thumbnail
-      const videoId = youtubeLink.split("v=")[1].split("&")[0];
+      const videoId = contentLink.split("v=")[1].split("&")[0];
       const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
       setImages((prevImages) => [
         ...prevImages,
-        { link: youtubeLink, thumbnail: thumbnailUrl },
+        { link: contentLink, thumbnail: thumbnailUrl },
       ]);
-    } else if (!/(png|jpg)/.test(youtubeLink)) {
+    } else if (!/(png|jpg)/.test(contentLink)) {
       try {
-        const { status, data } = await mql(youtubeLink, { screenshot: true });
+        const { status, data } = await mql(contentLink, { screenshot: true });
 
         // Check if the Microlink data contains a screenshot
         if (status === "success" && data.screenshot) {
@@ -45,7 +48,7 @@ export default function DropModal({ onClose, onDropMedia, setImages }) {
             ...prevImages,
             {
               url: data.screenshot.url,
-              websiteLink: youtubeLink,
+              websiteLink: contentLink,
             },
           ]);
           console.log(url);
@@ -59,6 +62,8 @@ export default function DropModal({ onClose, onDropMedia, setImages }) {
     } else {
       setImages((prevImages) => [...prevImages, ...newMedia]);
     }
+    console.log("Dropped files:", event.dataTransfer.files);
+    console.log("Content link:", contentLink);
   }
 
   return (

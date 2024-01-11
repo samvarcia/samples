@@ -12,12 +12,14 @@ import { Keyboard, Mousewheel } from "swiper/modules";
 import "swiper/css/keyboard";
 import "swiper/css/mousewheel";
 import "swiper/css";
+import DropModal from "./components/DropModal";
 // console.log(Swiper);
 export default function Home() {
   const swiperRef = useRef(null);
   const [modalSampleUrl, setModalSampleUrl] = useState(null);
   const [isDropModalOpen, setIsDropModalOpen] = useState(false);
-  const openDropModal = () => {
+  const handleDrop = () => {
+    console.log("ON DROPP");
     setIsDropModalOpen(true);
   };
 
@@ -97,21 +99,20 @@ export default function Home() {
       });
   }
   return (
-    <div className={styles.app} onDrop={() => openDropModal()}>
-      {isDropModalOpen && (
-        <DropModal
-          onClose={closeDropModal}
-          onDropMedia={handleDropMedia}
-          setImages={setImages}
-        />
-      )}
+    <div className={styles.app}>
+      {isDropModalOpen && m}
       {modalSampleUrl && (
         <SampleModal
           media={modalSampleUrl}
           onClose={() => setModalSampleUrl(null)}
         />
       )}
-      <div className={styles.panorama_slider}>
+      <div
+        className={styles.panorama_slider}
+        onDrop={() => {
+          handleDrop();
+        }}
+      >
         <div className={styles.swiper_wrapper}>
           <Swiper
             ref={swiperRef}

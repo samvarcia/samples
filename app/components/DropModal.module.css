@@ -16,7 +16,8 @@
 
 .dropModal {
   border-radius: 22px;
-  background: rgba(215, 216, 215, 0.80);
+  background: rgba(215, 216, 215, 0.46);
+  backdrop-filter: blur(11.5px);
   width: 70%;
   display: flex;
   align-items: center;
