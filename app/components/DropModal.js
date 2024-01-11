@@ -5,65 +5,101 @@ import styles from "./DropModal.module.css"; // Add appropriate styling
 import { motion } from "framer-motion";
 import mql from "@microlink/mql";
 
-export default function DropModal({ onClose, onDropMedia, setImages }) {
-  const [mediaInput, setMediaInput] = useState("");
+export default function DropModal({ onClose, setImages }) {
   const [isDraggingOver, setIsDraggingOver] = useState(false);
+  const [preview, setPreview] = useState([]);
 
   function handleDragOver(event) {
     event.preventDefault();
     setIsDraggingOver(true);
   }
+
   function handleDragLeave() {
     setIsDraggingOver(false);
   }
+
   async function handleDrop(event) {
     event.preventDefault();
-    const newMedia = Array.from(event.dataTransfer.files).map((file) =>
-      URL.createObjectURL(file)
-    );
-    setIsDraggingOver(false);
 
-    // Check if dropped content is a YouTube link
+    // Get the dropped files
+    const droppedFiles = event.dataTransfer.files;
+
+    // Get the content link
     const contentLink = event.dataTransfer.getData("text/plain");
-    if (newMedia.length > 0) {
-      setImages((prevImages) => [...prevImages, ...newMedia]);
-    }
-    if (contentLink.includes("youtube.com")) {
-      // If it's a YouTube link, extract the video ID and add both link and thumbnail
-      const videoId = contentLink.split("v=")[1].split("&")[0];
+
+    // Separate images, YouTube links, and website links
+    const images = Array.from(droppedFiles).filter((file) =>
+      /(png|jpg)/.test(file.type)
+    );
+    const youtubeLinks = contentLink.includes("youtube.com")
+      ? [contentLink]
+      : [];
+    const websiteLinks =
+      !contentLink.includes("youtube.com") && !images.length
+        ? [contentLink]
+        : [];
+
+    // Prepare an array to store the preview content
+    const previewContent = [];
+
+    // Handle YouTube links
+    for (const youtubeLink of youtubeLinks) {
+      const videoId = youtubeLink.split("v=")[1].split("&")[0];
       const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+      previewContent.push({ link: youtubeLink, thumbnail: thumbnailUrl });
+    }
 
-      setImages((prevImages) => [
-        ...prevImages,
-        { link: contentLink, thumbnail: thumbnailUrl },
-      ]);
-    } else if (!/(png|jpg)/.test(contentLink)) {
+    // Handle website links using the Microlink API
+    for (const websiteLink of websiteLinks) {
       try {
-        const { status, data } = await mql(contentLink, { screenshot: true });
+        const { status, data } = await mql(websiteLink, { screenshot: true });
 
-        // Check if the Microlink data contains a screenshot
         if (status === "success" && data.screenshot) {
-          // If yes, add the screenshot URL to the images state
-          setImages((prevImages) => [
-            ...prevImages,
-            {
-              url: data.screenshot.url,
-              websiteLink: contentLink,
-            },
-          ]);
-          console.log(url);
+          previewContent.push({
+            link: websiteLink,
+            thumbnail: data.screenshot.url,
+          });
         } else {
-          // If not, log a warning
           console.warn("Microlink data does not contain a screenshot:", data);
         }
       } catch (error) {
         console.error("Error fetching Microlink data:", error);
       }
-    } else {
-      setImages((prevImages) => [...prevImages, ...newMedia]);
     }
-    console.log("Dropped files:", event.dataTransfer.files);
-    console.log("Content link:", contentLink);
+
+    for (const imageFile of images) {
+      const previewUrl = URL.createObjectURL(imageFile);
+      previewContent.push({ link: previewUrl, thumbnail: previewUrl });
+    }
+
+    // Handle image links
+    const imageLinks = Array.from(event.dataTransfer.items).filter(
+      (item) =>
+        item.kind === "string" &&
+        (item.type.includes("png") || item.type.includes("jpg"))
+    );
+
+    for (const imageLink of imageLinks) {
+      const link = imageLink.getAsString((url) => {
+        previewContent.push({ link: url, thumbnail: url });
+      });
+    }
+
+    // Update the preview state
+    setPreview([...preview, ...previewContent]);
+
+    // Log the separated variables
+    console.log("Preview Content:", previewContent);
+
+    setIsDraggingOver(false);
+  }
+
+  function handleSave() {
+    // Use setImages to update the actual state with the preview content
+    setImages((prevImages) => [...prevImages, ...preview]);
+
+    // Close the modal
+    onClose();
   }
 
   return (
@@ -82,8 +118,35 @@ export default function DropModal({ onClose, onDropMedia, setImages }) {
         }}
         onDragOver={handleDragOver}
       >
-        <h2>DROP ANY REFERENCE (IMAGES & LINKS)</h2>
-        <p>IMAGES DRIVE CULTURE</p>
+        {preview.length ? (
+          <div>
+            <h3>Preview:</h3>
+
+            {preview.map((item, index) => (
+              <div key={index} className={styles.preview}>
+                {item instanceof File ? (
+                  <div>
+                    <span>Image: {item.name}</span>
+                    <img src={item.preview} alt="Preview" />
+                  </div>
+                ) : (
+                  <div>
+                    <span>Link: {item.link}</span>
+                    <img src={item.thumbnail} alt="Thumbnail" />
+                  </div>
+                )}
+                <button onClick={handleSave}>Save</button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div>
+            <h2>DROP ANY REFERENCE (IMAGES & LINKS)</h2>
+            <p>IMAGES DRIVE CULTURE</p>
+          </div>
+        )}
+
+        {/* Save button */}
       </motion.div>
     </div>
   );

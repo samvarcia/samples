@@ -28,6 +28,10 @@
   color: rgba(0, 0, 0, 0.50);
 }
 
+.preview img {
+  max-width: 200px;
+}
+
 .blueBackground {
   background: #1C63EC;
   color: #D7D8D7;
