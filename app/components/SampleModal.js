@@ -59,9 +59,17 @@ export default function SampleModal({ media, onClose }) {
               </a>
             </div>
           </div>
-        ) : (
+        ) : media.link ? (
           // For other media types or non-YouTube links, render the image
           <img src={media.link} alt="Full View" className={styles.fullImage} />
+        ) : (
+          <img src={media} alt="Full View" className={styles.fullImage} />
+        )}
+        {media.name && (
+          <div className={styles.mediaInfo}>
+            <h3>{media.name}</h3>
+            <p>{media.description}</p>
+          </div>
         )}
       </motion.div>
     </motion.div>

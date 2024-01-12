@@ -8,6 +8,8 @@ import mql from "@microlink/mql";
 export default function DropModal({ onClose, setImages }) {
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [preview, setPreview] = useState([]);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
 
   function handleDragOver(event) {
     event.preventDefault();
@@ -104,14 +106,21 @@ export default function DropModal({ onClose, setImages }) {
 
   function handleSave() {
     // Use setImages to update the actual state with the preview content
-    setImages((prevImages) => [...prevImages, ...preview]);
+    setImages((prevImages) => [
+      ...prevImages,
+      ...preview.map((item) => ({
+        ...item,
+        name,
+        description,
+      })),
+    ]);
 
     // Close the modal
     onClose();
   }
 
   return (
-    <div className={styles.overlay} onClick={onClose}>
+    <div className={styles.overlay}>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -128,22 +137,81 @@ export default function DropModal({ onClose, setImages }) {
       >
         {preview.length ? (
           <div>
-            <h3>Preview:</h3>
-
             {preview.map((item, index) => (
               <div key={index} className={styles.preview}>
                 {item instanceof File ? (
-                  <div>
-                    <span>Image: {item.name}</span>
+                  <div className={styles.previewContent}>
                     <img src={item.preview} alt="Preview" />
+                    <form action="" className={styles.previewForm}>
+                      <input
+                        type="text"
+                        placeholder="Name"
+                        className={styles.nameInput}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Description"
+                        className={styles.descriptionInput}
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                      />
+                      <div className={styles.previewButtons}>
+                        <button
+                          onClick={onClose}
+                          className={styles.cancelButton}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={handleSave}
+                          className={styles.saveButton}
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 ) : (
-                  <div>
-                    <span>Link: {item.link}</span>
+                  <div className={styles.previewContent}>
                     <img src={item.thumbnail} alt="Thumbnail" />
+                    <form action="" className={styles.previewForm}>
+                      <input
+                        type="text"
+                        placeholder="Name"
+                        className={styles.nameInput}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                      />
+                      <div className={styles.descriptionBox}>
+                        <textarea
+                          type="text"
+                          placeholder="Description"
+                          className={styles.descriptionInput}
+                          value={description}
+                          onChange={(e) => setDescription(e.target.value)}
+                        />
+                      </div>
+                      <div className={styles.previewButtons}>
+                        <button
+                          onClick={onClose}
+                          className={styles.cancelButton}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={handleSave}
+                          className={styles.saveButton}
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 )}
-                <button onClick={handleSave}>Save</button>
+                {/* <button onClick={handleSave}>Cancel</button>
+                <button onClick={handleSave}>Save</button> */}
               </div>
             ))}
           </div>

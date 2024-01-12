@@ -18,18 +18,131 @@
   border-radius: 22px;
   background: rgba(215, 216, 215, 0.46);
   backdrop-filter: blur(11.5px);
-  width: 70%;
+  max-width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
+  /* flex-direction: column; */
   overflow: hidden;
   height: 80%;
+  padding: 30px;
   color: rgba(0, 0, 0, 0.50);
 }
 
+.preview {
+  /* border: 1px solid red; */
+  width: 100%;
+  height: 100%;
+}
+
+.previewContent {
+  padding: 30px;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 40px;
+  align-items: center;
+}
+
+.previewForm {
+  /* border: 1px solid red; */
+  min-width: 500px;
+  width: 100%;
+  padding: 30px;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.previewForm input {
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  box-sizing: border-box;
+  /* Include padding and border in the width calculation */
+  margin-bottom: 10px;
+  line-height: normal;
+  /* width: 100%; */
+}
+
+.nameInput {
+  /* margin-bottom: 15%; */
+  flex: 1;
+  margin-bottom: 120px;
+}
+
+.descriptionInput {
+  height: 100%;
+  background-color: transparent;
+  border: none;
+  resize: none;
+  appearance: none;
+  width: 100%;
+  line-height: normal;
+  flex: 1;
+}
+
+.descriptionBox {
+  height: 200px;
+  /* border: 1px solid green; */
+
+}
+
+.nameInput::placeholder {
+  font-weight: bold;
+}
+
+.previewForm input::placeholder {
+  color: #CFD3D6
+}
+
+.descriptionInput::placeholder {
+  color: #CFD3D6
+}
+
+.descriptionInput:focus {
+  outline: none;
+}
+
+.previewForm input:focus {
+  outline: none;
+}
+
+.previewButtons {
+  display: flex;
+  gap: 5px;
+  width: 100%;
+  margin-top: 50px;
+  box-sizing: border-box;
+  /* padding: 5px 0px; */
+  color: #CFD3D6;
+  /* height: 40px; */
+}
+
+.previewButtons button {
+  font-size: 22px;
+  padding: 10px;
+  /* height: 30px; */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.cancelButton {
+  width: 20%;
+  background-color: #A4A6A8;
+}
+
+.saveButton {
+
+  width: 80%;
+  background-color: rgba(0, 0, 0, 0.50);
+}
+
 .preview img {
-  max-width: 200px;
+  width: 100%;
+  border-radius: 4px;
+  max-width: 600px;
+  max-height: 500px;
 }
 
 .blueBackground {
