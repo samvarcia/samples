@@ -51,32 +51,37 @@ export default function DropModal({ onClose, setImages }) {
 
     // Handle website links using the Microlink API
     for (const websiteLink of websiteLinks) {
-      try {
-        const { status, data } = await mql(websiteLink, { screenshot: true });
+      if (!/(png|jpg)/.test(websiteLink)) {
+        try {
+          const { status, data } = await mql(websiteLink, { screenshot: true });
 
-        if (status === "success" && data.screenshot) {
-          previewContent.push({
-            link: websiteLink,
-            thumbnail: data.screenshot.url,
-          });
-        } else {
-          console.warn("Microlink data does not contain a screenshot:", data);
+          if (status === "success" && data.screenshot) {
+            previewContent.push({
+              website: websiteLink,
+              link: websiteLink,
+              thumbnail: data.screenshot.url,
+            });
+          } else {
+            console.warn("Microlink data does not contain a screenshot:", data);
+          }
+        } catch (error) {
+          console.error("Error fetching Microlink data:", error);
         }
-      } catch (error) {
-        console.error("Error fetching Microlink data:", error);
       }
     }
 
-    for (const imageFile of images) {
-      const previewUrl = URL.createObjectURL(imageFile);
-      previewContent.push({ link: previewUrl, thumbnail: previewUrl });
+    for (const imageFile of droppedFiles) {
+      // Check if the file has a common image file extension
+      if (/\.(jpg|jpeg|png)$/i.test(imageFile.name)) {
+        const previewUrl = URL.createObjectURL(imageFile);
+        previewContent.push({ link: previewUrl, thumbnail: previewUrl });
+        images.push(imageFile);
+      }
     }
 
     // Handle image links
     const imageLinks = Array.from(event.dataTransfer.items).filter(
-      (item) =>
-        item.kind === "string" &&
-        (item.type.includes("png") || item.type.includes("jpg"))
+      (item) => item.kind === "string" && /\.(jpg|jpeg|png)$/i.test(item.type)
     );
 
     for (const imageLink of imageLinks) {
@@ -87,6 +92,9 @@ export default function DropModal({ onClose, setImages }) {
 
     // Update the preview state
     setPreview([...preview, ...previewContent]);
+
+    // Use setImages to update the actual state with the preview content
+    // setImages((prevImages) => [...prevImages, ...images, ...previewContent]);
 
     // Log the separated variables
     console.log("Preview Content:", previewContent);
