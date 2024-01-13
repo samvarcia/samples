@@ -216,7 +216,7 @@ export default function DropModal({ onClose, setImages }) {
             ))}
           </div>
         ) : (
-          <div>
+          <div className={styles.dropText}>
             <h2>DROP ANY REFERENCE (IMAGES & LINKS)</h2>
             <p>IMAGES DRIVE CULTURE</p>
           </div>

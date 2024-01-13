@@ -21,13 +21,7 @@ export default function SampleModal({ media, onClose }) {
       className={`${styles.overlay} ${media ? styles.active : ""}`}
       onClick={onClose}
     >
-      <motion.div
-        // initial={{ opacity: 0 }}
-        // animate={{ opacity: 1 }}
-        // exit={{ opacity: 0 }}
-        // transition={{ duration: 1.2 }}
-        className={`${styles.modal} ${media ? styles.active : ""}`}
-      >
+      <motion.div className={`${styles.modal} ${media ? styles.active : ""}`}>
         {media &&
         typeof media.link === "string" &&
         media.link.includes("youtube.com") ? (
