@@ -8,6 +8,8 @@ import SampleModal from "./components/SampleModal";
 import Menu from "./components/Menu";
 import { motion } from "framer-motion";
 import { Keyboard, Mousewheel } from "swiper/modules";
+import { usePathname } from "next/navigation";
+import SplashScreen from "./components/SplashScreen";
 // Import Swiper styles
 import "swiper/css/keyboard";
 import "swiper/css/mousewheel";
@@ -98,111 +100,132 @@ export default function Home() {
           });
       });
   }
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
+  if (isHome) {
+    console.log("HOMES");
+  }
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate your content loading process here
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500); // Adjust the time based on your actual content loading time
+  }, []);
+
   return (
-    <div className={styles.app}>
-      {isDropModalOpen && m}
-      {modalSampleUrl && (
-        <SampleModal
-          media={modalSampleUrl}
-          onClose={() => setModalSampleUrl(null)}
-        />
-      )}
-      <div
-        className={styles.panorama_slider}
-        onDrop={() => {
-          handleDrop();
-        }}
-      >
-        <div className={styles.swiper_wrapper}>
-          <Swiper
-            ref={swiperRef}
-            modules={[b, Keyboard, Mousewheel]}
-            keyboard={{
-              enabled: true,
-              onlyInViewport: false,
-            }}
-            mousewheel={{
-              enabled: true,
-            }}
-            effect="panorama"
-            centeredSlides={true}
-            onUpdate={(swiper) => handleSlideChange(swiper)}
-            loop={true}
-            slidesPerView={3.5}
-            style={{ height: "100%", padding: "50px 0px" }}
-            initialSlide={0}
-            panoramaeffect={{ depth: 350, rotate: 25 }}
-            breakpoints={{
-              480: {
-                slidesPerView: 2,
-                panoramaEffect: {
-                  rotate: 35,
-                  depth: 150,
-                },
-              },
-              640: {
-                slidesPerView: 3,
-                panoramaEffect: {
-                  rotate: 30,
-                  depth: 150,
-                },
-              },
-              1024: {
-                slidesPerView: 4,
-                panoramaEffect: {
-                  rotate: 30,
-                  depth: 200,
-                },
-              },
-              1200: {
-                slidesPerView: 4,
-                panoramaEffect: {
-                  rotate: 25,
-                  depth: 250,
-                },
-              },
+    <>
+      {loading ? (
+        <SplashScreen />
+      ) : (
+        <div className={styles.app}>
+          {isDropModalOpen && m}
+          {modalSampleUrl && (
+            <SampleModal
+              media={modalSampleUrl}
+              onClose={() => setModalSampleUrl(null)}
+            />
+          )}
+          <div
+            className={styles.panorama_slider}
+            onDrop={() => {
+              handleDrop();
             }}
           >
-            {images.map((media, index) => (
-              <SwiperSlide key={index} onClick={() => openModal(media)}>
-                <motion.div
-                  className={styles.swiper_slide}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 1.6 }}
-                >
-                  {media.link && media.thumbnail ? (
-                    // If it's a YouTube link, render the thumbnail
-                    <img
-                      className={styles.slide_image}
-                      src={media.thumbnail}
-                      alt={`Slide ${index}`}
-                      loading="lazy"
-                    />
-                  ) : media.url ? (
-                    // For other media types, render the image
-                    <img
-                      className={styles.slide_image}
-                      src={media.url}
-                      alt={`Slide ${index}`}
-                      loading="lazy"
-                    />
-                  ) : (
-                    // For other media types, render the image
-                    <img
-                      className={styles.slide_image}
-                      src={media}
-                      alt={`Slide ${index}`}
-                      loading="lazy"
-                    />
-                  )}
-                </motion.div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+            <div className={styles.swiper_wrapper}>
+              <Swiper
+                ref={swiperRef}
+                modules={[b, Keyboard, Mousewheel]}
+                keyboard={{
+                  enabled: true,
+                  onlyInViewport: false,
+                }}
+                mousewheel={{
+                  enabled: true,
+                }}
+                effect="panorama"
+                centeredSlides={true}
+                onUpdate={(swiper) => handleSlideChange(swiper)}
+                loop={true}
+                slidesPerView={3.5}
+                style={{ height: "100%", padding: "50px 0px" }}
+                initialSlide={0}
+                panoramaeffect={{ depth: 350, rotate: 25 }}
+                breakpoints={{
+                  480: {
+                    slidesPerView: 2,
+                    panoramaEffect: {
+                      rotate: 35,
+                      depth: 150,
+                    },
+                  },
+                  640: {
+                    slidesPerView: 3,
+                    panoramaEffect: {
+                      rotate: 30,
+                      depth: 150,
+                    },
+                  },
+                  1024: {
+                    slidesPerView: 4,
+                    panoramaEffect: {
+                      rotate: 30,
+                      depth: 200,
+                    },
+                  },
+                  1200: {
+                    slidesPerView: 4,
+                    panoramaEffect: {
+                      rotate: 25,
+                      depth: 250,
+                    },
+                  },
+                }}
+              >
+                {images.map((media, index) => (
+                  <SwiperSlide key={index} onClick={() => openModal(media)}>
+                    <motion.div
+                      className={styles.swiper_slide}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 1.6 }}
+                    >
+                      {media.link && media.thumbnail ? (
+                        // If it's a YouTube link, render the thumbnail
+                        <img
+                          className={styles.slide_image}
+                          src={media.thumbnail}
+                          alt={`Slide ${index}`}
+                          loading="lazy"
+                        />
+                      ) : media.url ? (
+                        // For other media types, render the image
+                        <img
+                          className={styles.slide_image}
+                          src={media.url}
+                          alt={`Slide ${index}`}
+                          loading="lazy"
+                        />
+                      ) : (
+                        // For other media types, render the image
+                        <img
+                          className={styles.slide_image}
+                          src={media}
+                          alt={`Slide ${index}`}
+                          loading="lazy"
+                        />
+                      )}
+                    </motion.div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          </div>
+          <Menu onDropMedia={handleDropMedia} setImages={setImages} />
         </div>
-      </div>
-      <Menu onDropMedia={handleDropMedia} setImages={setImages} />
-    </div>
+      )}
+    </>
   );
 }

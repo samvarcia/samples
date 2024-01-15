@@ -1,5 +1,9 @@
+// "use client";
 import localFont from "next/font/local";
 import "./globals.css";
+import SplashScreen from "./components/SplashScreen";
+import { usePathname } from "next/navigation";
+// import { useEffect, useState } from "react";
 
 const HelveticaNow = localFont({
   src: [
@@ -26,8 +30,22 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  // const pathname = usePathname();
+  // const isHome = pathname === "/";
+  // const [isLoading, setIsLoading] = useState(isHome);
+
+  // useEffect(() => {
+  //   if (isLoading) return;
+  // }, [isLoading]);
   return (
     <html lang="en">
+      {/* <head>
+        <title>SAMPLES</title>
+        <meta
+          name="description"
+          content="INFINITE STREAM OF DESIGN REFERENCES"
+        />
+      </head> */}
       <body className={HelveticaNow.className}>{children}</body>
     </html>
   );
