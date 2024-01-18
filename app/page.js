@@ -1,37 +1,64 @@
 "use client";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import styles from "./page.module.css";
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-
+import SampleModal from "./components/SampleModal";
+import Menu from "./components/Menu";
+import { motion } from "framer-motion";
+import { Keyboard, Mousewheel } from "swiper/modules";
+import { usePathname } from "next/navigation";
+import SplashScreen from "./components/SplashScreen";
 // Import Swiper styles
+import "swiper/css/keyboard";
+import "swiper/css/mousewheel";
 import "swiper/css";
+import DropModal from "./components/DropModal";
 // console.log(Swiper);
 export default function Home() {
-  const [images, setImages] = useState([
-    "https://pbs.twimg.com/media/F7YAFlsXUAAimLW?format=png&name=small",
-    "https://pbs.twimg.com/media/F3xRb4FW4AA89rU?format=jpg&name=large",
-    "https://pbs.twimg.com/media/F3lKGzWa4AA57u8?format=jpg&name=large",
-  ]);
+  const swiperRef = useRef(null);
+  const [modalSampleUrl, setModalSampleUrl] = useState(null);
+  const [isDropModalOpen, setIsDropModalOpen] = useState(false);
+  const handleDrop = () => {
+    console.log("ON DROPP");
+    setIsDropModalOpen(true);
+  };
 
-  function handleDrop(event) {
-    event.preventDefault();
-    const newImages = Array.from(event.dataTransfer.files).map((file) =>
-      URL.createObjectURL(file)
-    );
-    setImages((prevImages) => [...prevImages, ...newImages]);
+  const closeDropModal = () => {
+    setIsDropModalOpen(false);
+  };
+  // const [images, setImages] = useState([
+  //   "https://pbs.twimg.com/media/F7YAFlsXUAAimLW?format=png&name=small",
+  //   "https://pbs.twimg.com/media/F3xRb4FW4AA89rU?format=jpg&name=large",
+  //   "https://pbs.twimg.com/media/F3lKGzWa4AA57u8?format=jpg&name=large",
+  //   "https://pbs.twimg.com/media/F_3q9FLW0AAh1hx?format=jpg&name=4096x4096",
+  //   "https://pbs.twimg.com/media/F_pUb85WUAAunEX?format=jpg&name=medium",
+  //   "https://pbs.twimg.com/media/Fe9uNuPUYAESUyN?format=jpg&name=small",
+  // ]);
+  const [images, setImages] = useState([]);
+  const handleDropMedia = (media) => {
+    setImages((prevImages) => [...prevImages, media]);
+  };
+
+  function handleSlideChange(swiper) {
+    const imagesTotal = images.length;
+    const centeredIndex = imagesTotal - 1; // Index of the last image
+    swiper.slideToLoop(centeredIndex);
   }
 
-  function handleDragOver(event) {
-    event.preventDefault();
-  }
+  const openModal = (media) => {
+    setModalSampleUrl(media);
+  };
 
+  const closeModal = () => {
+    setModalSampleUrl(null);
+  };
   function b({ swiper: a, extendParams: s, on: o }) {
     s({
       panoramaEffect: {
-        depth: 200,
-        rotate: 30,
+        depth: 550,
+        rotate: 445,
       },
     }),
       o("beforeInit", () => {
@@ -74,72 +101,132 @@ export default function Home() {
           });
       });
   }
-  // console.log(b);
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
+  if (isHome) {
+    console.log("HOMES");
+  }
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate your content loading process here
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500); // Adjust the time based on your actual content loading time
+  }, []);
+
   return (
-    <div className={styles.app}>
-      <div
-        className={styles.panorama_slider}
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-      >
-        <div className={styles.swiper_container}>
-          <Swiper
-            modules={[b]}
-            effect="panorama"
-            spaceBetween={3}
-            centeredSlides={true}
-            grabCursor={true}
-            // loopAdditionalSlides={1}
-            loop={true}
-            slidesPerView={3}
-            panoramaEffect={{ depth: 50, rotate: 45 }}
-            breakpoints={{
-              480: {
-                slidesPerView: 2,
-                panoramaEffect: {
-                  rotate: 35,
-                  depth: 150,
-                },
-              },
-              640: {
-                slidesPerView: 3,
-                panoramaEffect: {
-                  rotate: 30,
-                  depth: 150,
-                },
-              },
-              1024: {
-                slidesPerView: 4,
-                panoramaEffect: {
-                  rotate: 30,
-                  depth: 200,
-                },
-              },
-              1200: {
-                slidesPerView: 4,
-                panoramaEffect: {
-                  rotate: 25,
-                  depth: 250,
-                },
-              },
+    <>
+      {loading ? (
+        <SplashScreen />
+      ) : (
+        <div className={styles.app}>
+          {isDropModalOpen && m}
+          {modalSampleUrl && (
+            <SampleModal
+              media={modalSampleUrl}
+              onClose={() => setModalSampleUrl(null)}
+            />
+          )}
+          <div
+            className={styles.panorama_slider}
+            onDrop={() => {
+              handleDrop();
             }}
           >
-            {images.map((imageUrl, index) => (
-              <SwiperSlide key={index}>
-                <div className={styles.swiper_slide}>
-                  <img
-                    class={styles.slide_image}
-                    src={imageUrl}
-                    alt={`Slide ${index}`}
-                    loading="lazy"
-                  />
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+            <div className={styles.swiper_wrapper}>
+              <Swiper
+                ref={swiperRef}
+                modules={[b, Keyboard, Mousewheel]}
+                keyboard={{
+                  enabled: true,
+                  onlyInViewport: false,
+                }}
+                mousewheel={{
+                  enabled: true,
+                }}
+                effect="panorama"
+                centeredSlides={true}
+                onUpdate={(swiper) => handleSlideChange(swiper)}
+                loop={true}
+                slidesPerView={3.5}
+                style={{ height: "100%", padding: "50px 0px" }}
+                initialSlide={0}
+                panoramaeffect={{ depth: 350, rotate: 25 }}
+                breakpoints={{
+                  480: {
+                    slidesPerView: 2,
+                    panoramaEffect: {
+                      rotate: 35,
+                      depth: 150,
+                    },
+                  },
+                  640: {
+                    slidesPerView: 3,
+                    panoramaEffect: {
+                      rotate: 30,
+                      depth: 150,
+                    },
+                  },
+                  1024: {
+                    slidesPerView: 4,
+                    panoramaEffect: {
+                      rotate: 30,
+                      depth: 200,
+                    },
+                  },
+                  1200: {
+                    slidesPerView: 4,
+                    panoramaEffect: {
+                      rotate: 25,
+                      depth: 250,
+                    },
+                  },
+                }}
+              >
+                {images.map((media, index) => (
+                  <SwiperSlide key={index} onClick={() => openModal(media)}>
+                    <motion.div
+                      className={styles.swiper_slide}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 1.6 }}
+                    >
+                      {media.link && media.thumbnail ? (
+                        // If it's a YouTube link, render the thumbnail
+                        <img
+                          className={styles.slide_image}
+                          src={media.thumbnail}
+                          alt={`Slide ${index}`}
+                          loading="lazy"
+                        />
+                      ) : media.url ? (
+                        // For other media types, render the image
+                        <img
+                          className={styles.slide_image}
+                          src={media.url}
+                          alt={`Slide ${index}`}
+                          loading="lazy"
+                        />
+                      ) : (
+                        // For other media types, render the image
+                        <img
+                          className={styles.slide_image}
+                          src={media}
+                          alt={`Slide ${index}`}
+                          loading="lazy"
+                        />
+                      )}
+                    </motion.div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          </div>
+          <Menu onDropMedia={handleDropMedia} setImages={setImages} />
         </div>
-      </div>
-      <h1>SAMPLES</h1>
-    </div>
+      )}
+    </>
   );
 }

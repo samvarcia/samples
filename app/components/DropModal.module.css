@@ -1,0 +1,181 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  /* Set a high z-index value to place it above other elements */
+  transition: background 0.3s ease;
+  /* Smooth background transition */
+}
+
+.dropModal {
+  border-radius: 22px;
+  background: rgba(215, 216, 215, 0.46);
+  backdrop-filter: blur(11.5px);
+  min-width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* flex-direction: column; */
+  overflow: hidden;
+  height: 80%;
+  padding: 30px;
+  color: rgba(0, 0, 0, 0.50);
+}
+
+.dropText {
+  text-align: center;
+}
+
+.dropText h2 {
+  font-weight: 500;
+  letter-spacing: -2px;
+  font-size: 30px;
+}
+
+.dropText p {
+  letter-spacing: -1.80px;
+  margin-top: 10px;
+  font-size: 24px;
+}
+
+.preview {
+  /* border: 1px solid red; */
+  width: 100%;
+  height: 100%;
+}
+
+.previewContent {
+  padding: 30px;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 40px;
+  align-items: center;
+}
+
+.previewForm {
+  /* border: 1px solid red; */
+  min-width: 500px;
+  width: 100%;
+  padding: 30px;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.previewForm input {
+  background-color: transparent;
+  font-family: inherit;
+  border: none;
+  font-size: 20px;
+  box-sizing: border-box;
+  /* Include padding and border in the width calculation */
+  margin-bottom: 30px;
+  line-height: normal;
+  font-size: 30px;
+  letter-spacing: -2px;
+
+  /* width: 100%; */
+}
+
+.nameInput {
+  /* margin-bottom: 15%; */
+  flex: 1;
+  /* margin-bottom: 120px; */
+}
+
+.descriptionInput {
+  height: 100%;
+  background-color: transparent;
+  border: none;
+  resize: none;
+  letter-spacing: -1px;
+  font-size: 22px;
+  appearance: none;
+  width: 100%;
+  line-height: normal;
+  flex: 1;
+  font-family: inherit;
+}
+
+.descriptionBox {
+  height: 200px;
+  /* border: 1px solid green; */
+
+}
+
+.nameInput::placeholder {
+  font-weight: bold;
+}
+
+.previewForm input::placeholder {
+  color: #CFD3D6
+}
+
+.descriptionInput::placeholder {
+  color: #CFD3D6
+}
+
+.descriptionInput:focus {
+  outline: none;
+}
+
+.previewForm input:focus {
+  outline: none;
+}
+
+.previewButtons {
+  display: flex;
+  gap: 5px;
+  width: 100%;
+  margin-top: 30px;
+  box-sizing: border-box;
+  /* padding: 5px 0px; */
+  /* height: 40px; */
+}
+
+.previewButtons button {
+  color: #CFD3D6;
+  font-size: 22px;
+  padding: 10px;
+  /* height: 30px; */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 400;
+}
+
+.cancelButton {
+  width: 20%;
+  background-color: #A4A6A8;
+}
+
+.saveButton {
+
+  width: 80%;
+  background-color: rgba(0, 0, 0, 0.50);
+}
+
+.preview img {
+  width: 100%;
+  border-radius: 4px;
+  max-width: 600px;
+  max-height: 500px;
+}
+
+.blueBackground {
+  background: #1C63EC;
+  color: #D7D8D7;
+  transition: background-color 0.5s ease;
+  /* Adjust the duration and easing function as needed */
+  transition: color 0.5s ease;
+  /* Adjust the duration and easing function as needed */
+
+}

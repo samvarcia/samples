@@ -1,24 +1,26 @@
 .app {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   /* padding: 6rem; */
   min-height: 100vh;
+  /* border: 1px solid blue; */
 }
 
 .panorama_slider {
-  padding: 48px 0;
+  margin: 48px 0 0 0;
+  height: 100%;
   width: 100%;
   position: relative;
   overflow: hidden;
+
 }
 
-
-.swiper_container {
-  width: 100%;
-  height: 100%;
-
+.swiper_wrapper {
+  perspective: 1500px;
+  transform-style: preserve-3d;
+  height: 400px;
 }
 
 .swiper_slide {
@@ -26,42 +28,26 @@
   background-size: cover;
   background-position: center;
   transform-style: preserve-3d;
-  height: 300px;
+  height: 100%;
+
+  /* height: 300px; */
   overflow: hidden;
   width: 100%;
+  /* height: 100%; */
 }
 
-.fadeIn {
-  opacity: 1;
-  transition: opacity 0.5s ease-in-out;
-  /* Adjust the duration and easing */
-}
 
-.swiper_slide {
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-  /* Adjust the duration and easing */
-}
-
-.swiper__slide {
-  background-size: cover;
-  background-position: center;
-  transform-style: preserve-3d;
-  height: 100%;
-  overflow: hidden;
-}
-
-.panorama_slider img {
+.slide_image {
   /* border: 1px solid red; */
   width: 100%;
   height: 100%;
   object-fit: cover;
   pointer-events: none;
+  /* pointer-events: none; */
 }
 
-.panorama-slider .swiper {
-  width: 100%;
-  height: 300px;
+.slide_video {
+  height: 100%;
 }
 
 
@@ -170,9 +156,9 @@
     filter: invert(1);
   }
 
-  .logo {
+  /* .logo {
     filter: invert(1) drop-shadow(0 0 0.3rem #ffffff70);
-  }
+  } */
 }
 
 @keyframes rotate {
