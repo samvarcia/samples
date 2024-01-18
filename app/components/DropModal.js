@@ -145,6 +145,7 @@ export default function DropModal({ onClose, setImages }) {
                     <form action="" className={styles.previewForm}>
                       <input
                         type="text"
+                        required
                         placeholder="Name"
                         className={styles.nameInput}
                         value={name}
@@ -179,6 +180,7 @@ export default function DropModal({ onClose, setImages }) {
                     <form action="" className={styles.previewForm}>
                       <input
                         type="text"
+                        required
                         placeholder="Name"
                         className={styles.nameInput}
                         value={name}

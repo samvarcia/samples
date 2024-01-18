@@ -28,14 +28,15 @@ export default function Home() {
   const closeDropModal = () => {
     setIsDropModalOpen(false);
   };
-  const [images, setImages] = useState([
-    "https://pbs.twimg.com/media/F7YAFlsXUAAimLW?format=png&name=small",
-    "https://pbs.twimg.com/media/F3xRb4FW4AA89rU?format=jpg&name=large",
-    "https://pbs.twimg.com/media/F3lKGzWa4AA57u8?format=jpg&name=large",
-    "https://pbs.twimg.com/media/F_3q9FLW0AAh1hx?format=jpg&name=4096x4096",
-    "https://pbs.twimg.com/media/F_pUb85WUAAunEX?format=jpg&name=medium",
-    "https://pbs.twimg.com/media/Fe9uNuPUYAESUyN?format=jpg&name=small",
-  ]);
+  // const [images, setImages] = useState([
+  //   "https://pbs.twimg.com/media/F7YAFlsXUAAimLW?format=png&name=small",
+  //   "https://pbs.twimg.com/media/F3xRb4FW4AA89rU?format=jpg&name=large",
+  //   "https://pbs.twimg.com/media/F3lKGzWa4AA57u8?format=jpg&name=large",
+  //   "https://pbs.twimg.com/media/F_3q9FLW0AAh1hx?format=jpg&name=4096x4096",
+  //   "https://pbs.twimg.com/media/F_pUb85WUAAunEX?format=jpg&name=medium",
+  //   "https://pbs.twimg.com/media/Fe9uNuPUYAESUyN?format=jpg&name=small",
+  // ]);
+  const [images, setImages] = useState([]);
   const handleDropMedia = (media) => {
     setImages((prevImages) => [...prevImages, media]);
   };
