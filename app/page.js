@@ -21,9 +21,12 @@ export default function Home() {
   const [modalSampleUrl, setModalSampleUrl] = useState(null);
   const [isDropModalOpen, setIsDropModalOpen] = useState(false);
   const handleDrop = () => {
-    console.log("ON DROPP");
+    // console.log("ON DROPP");
     setIsDropModalOpen(true);
   };
+  useEffect(() => {
+    getData();
+  }, []);
 
   const closeDropModal = () => {
     setIsDropModalOpen(false);
@@ -37,8 +40,21 @@ export default function Home() {
   //   "https://pbs.twimg.com/media/Fe9uNuPUYAESUyN?format=jpg&name=small",
   // ]);
   const [images, setImages] = useState([]);
+
   const handleDropMedia = (media) => {
     setImages((prevImages) => [...prevImages, media]);
+  };
+  const getData = async () => {
+    await fetch("/api/samples")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.samples.rows);
+        setImages(data.samples.rows);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => {
+        // set loading to false
+      });
   };
 
   function handleSlideChange(swiper) {
@@ -104,9 +120,6 @@ export default function Home() {
   const pathname = usePathname();
   const isHome = pathname === "/";
 
-  if (isHome) {
-    console.log("HOMES");
-  }
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
