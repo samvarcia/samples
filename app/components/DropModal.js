@@ -10,6 +10,7 @@ export default function DropModal({ onClose, setImages }) {
   const [preview, setPreview] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [type, setType] = useState("");
 
   function handleDragOver(event) {
     event.preventDefault();
@@ -49,6 +50,7 @@ export default function DropModal({ onClose, setImages }) {
       const videoId = youtubeLink.split("v=")[1].split("&")[0];
       const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
       previewContent.push({ link: youtubeLink, thumbnail: thumbnailUrl });
+      setType("youtube");
     }
 
     // Handle website links using the Microlink API
@@ -63,6 +65,7 @@ export default function DropModal({ onClose, setImages }) {
               link: websiteLink,
               thumbnail: data.screenshot.url,
             });
+            setType("website");
           } else {
             console.warn("Microlink data does not contain a screenshot:", data);
           }
@@ -72,13 +75,21 @@ export default function DropModal({ onClose, setImages }) {
       }
     }
 
-    for (const imageFile of droppedFiles) {
-      // Check if the file has a common image file extension
-      if (/\.(jpg|jpeg|png)$/i.test(imageFile.name)) {
-        const previewUrl = URL.createObjectURL(imageFile);
-        previewContent.push({ link: previewUrl, thumbnail: previewUrl });
-        images.push(imageFile);
-      }
+    // for (const imageFile of droppedFiles) {
+    //   // Check if the file has a common image file extension
+    //   if (/\.(jpg|jpeg|png)$/i.test(imageFile.name)) {
+    //     const previewUrl = URL.createObjectURL(imageFile);
+    //     console.log("PREVIEW URL: " + imageFile.name);
+    //     console.log("LINK: " + contentLink);
+    //     previewContent.push({ link: previewUrl, thumbnail: previewUrl });
+    //     images.push(imageFile);
+    //     setType("image");
+    //   }
+    // }
+    if (/(jpg|jpeg|png)/i.test(contentLink)) {
+      const previewUrl = contentLink; // Replace this with your actual logic for obtaining the preview URL
+      previewContent.push({ link: previewUrl, thumbnail: previewUrl });
+      setType("image");
     }
 
     // Handle image links
@@ -87,8 +98,9 @@ export default function DropModal({ onClose, setImages }) {
     );
 
     for (const imageLink of imageLinks) {
-      const link = imageLink.getAsString((url) => {
+      imageLink.getAsString((url) => {
         previewContent.push({ link: url, thumbnail: url });
+        setType("image");
       });
     }
 
@@ -104,13 +116,61 @@ export default function DropModal({ onClose, setImages }) {
     setIsDraggingOver(false);
   }
 
-  function handleSave() {
+  // function handleSave() {
+  //   // Use setImages to update the actual state with the preview content
+  //   setImages((prevImages) => [
+  //     ...prevImages,
+  //     ...preview.map((item) => ({
+  //       ...item,
+  //       name,
+  //       description,
+  //     })),
+  //   ]);
+  //   console.log(type);
+
+  //   // Close the modal
+  //   onClose();
+  // }
+
+  async function handleSave(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    // Prepare data to be sent in the request body
+    const postData = {
+      name,
+      description,
+      type: type, // You can adjust the type accordingly
+      link: preview.map((item) => item.link).join(","),
+      thumbnail: preview.map((item) => item.thumbnail).join(","),
+    };
+
+    try {
+      // Send a POST request to the API endpoint
+      const response = await fetch("/api/addsamples", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      });
+
+      // Check if the request was successful
+      if (response.ok) {
+        console.log("Sample added successfully");
+      } else {
+        console.error("Failed to add sample:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error during fetch:", error);
+    }
+
     // Use setImages to update the actual state with the preview content
     setImages((prevImages) => [
       ...prevImages,
       ...preview.map((item) => ({
         ...item,
         name,
+        type,
         description,
       })),
     ]);
@@ -166,7 +226,7 @@ export default function DropModal({ onClose, setImages }) {
                           Cancel
                         </button>
                         <button
-                          onClick={handleSave}
+                          onClick={(e) => handleSave(e)}
                           className={styles.saveButton}
                         >
                           Save
@@ -203,7 +263,7 @@ export default function DropModal({ onClose, setImages }) {
                           Cancel
                         </button>
                         <button
-                          onClick={handleSave}
+                          onClick={(e) => handleSave(e)}
                           className={styles.saveButton}
                         >
                           Save
