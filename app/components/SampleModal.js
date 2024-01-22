@@ -38,9 +38,9 @@ export default function SampleModal({ media, onClose }) {
               allowfullscreen
             ></iframe>
           </div>
-        ) : media.website ? (
+        ) : media.type === "website" ? (
           <div className={styles.fullWebsiteView}>
-            <a target="_blank" href={media.websiteLink}>
+            <a target="_blank" href={media.link}>
               <img
                 src={media.thumbnail}
                 alt="Full View"
@@ -48,8 +48,8 @@ export default function SampleModal({ media, onClose }) {
               />
             </a>
             <div className={styles.websiteUrl}>
-              <a target="_blank" href={media.website}>
-                {media.website}
+              <a target="_blank" href={media.link}>
+                {media.link}
               </a>
             </div>
           </div>
