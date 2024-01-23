@@ -160,10 +160,11 @@ export default function Home() {
                   enabled: true,
                 }}
                 effect="panorama"
+                autoplay={true}
                 centeredSlides={true}
                 onUpdate={(swiper) => handleSlideChange(swiper)}
                 loop={true}
-                slidesPerView={3.5}
+                slidesPerView={3}
                 style={{ height: "100%", padding: "50px 0px" }}
                 initialSlide={0}
                 panoramaeffect={{ depth: 350, rotate: 25 }}
