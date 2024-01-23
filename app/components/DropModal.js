@@ -11,6 +11,7 @@ export default function DropModal({ onClose, setImages }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [type, setType] = useState("");
+  const [websiteLoading, setWebsiteLoading] = useState(false);
 
   function handleDragOver(event) {
     event.preventDefault();
@@ -57,6 +58,7 @@ export default function DropModal({ onClose, setImages }) {
     for (const websiteLink of websiteLinks) {
       if (!/(png|jpg)/.test(websiteLink)) {
         try {
+          setWebsiteLoading(true);
           const { status, data } = await mql(websiteLink, { screenshot: true });
 
           if (status === "success" && data.screenshot) {
@@ -71,21 +73,12 @@ export default function DropModal({ onClose, setImages }) {
           }
         } catch (error) {
           console.error("Error fetching Microlink data:", error);
+        } finally {
+          setWebsiteLoading(false); // Set loading state to false after API call
         }
       }
     }
 
-    // for (const imageFile of droppedFiles) {
-    //   // Check if the file has a common image file extension
-    //   if (/\.(jpg|jpeg|png)$/i.test(imageFile.name)) {
-    //     const previewUrl = URL.createObjectURL(imageFile);
-    //     console.log("PREVIEW URL: " + imageFile.name);
-    //     console.log("LINK: " + contentLink);
-    //     previewContent.push({ link: previewUrl, thumbnail: previewUrl });
-    //     images.push(imageFile);
-    //     setType("image");
-    //   }
-    // }
     if (/(jpg|jpeg|png)/i.test(contentLink)) {
       const previewUrl = contentLink; // Replace this with your actual logic for obtaining the preview URL
       previewContent.push({ link: previewUrl, thumbnail: previewUrl });
@@ -116,22 +109,6 @@ export default function DropModal({ onClose, setImages }) {
     setIsDraggingOver(false);
   }
 
-  // function handleSave() {
-  //   // Use setImages to update the actual state with the preview content
-  //   setImages((prevImages) => [
-  //     ...prevImages,
-  //     ...preview.map((item) => ({
-  //       ...item,
-  //       name,
-  //       description,
-  //     })),
-  //   ]);
-  //   console.log(type);
-
-  //   // Close the modal
-  //   onClose();
-  // }
-
   async function handleSave(event) {
     event.preventDefault(); // Prevent the default form submission behavior
 
@@ -154,7 +131,6 @@ export default function DropModal({ onClose, setImages }) {
         body: JSON.stringify(postData),
       });
 
-      // Check if the request was successful
       if (response.ok) {
         console.log("Sample added successfully");
       } else {
@@ -164,7 +140,6 @@ export default function DropModal({ onClose, setImages }) {
       console.error("Error during fetch:", error);
     }
 
-    // Use setImages to update the actual state with the preview content
     setImages((prevImages) => [
       ...prevImages,
       ...preview.map((item) => ({
@@ -195,7 +170,9 @@ export default function DropModal({ onClose, setImages }) {
         }}
         onDragOver={handleDragOver}
       >
-        {preview.length ? (
+        {websiteLoading ? (
+          <h1>LOADING...</h1>
+        ) : preview.length ? (
           <div>
             {preview.map((item, index) => (
               <div key={index} className={styles.preview}>
@@ -272,8 +249,6 @@ export default function DropModal({ onClose, setImages }) {
                     </form>
                   </div>
                 )}
-                {/* <button onClick={handleSave}>Cancel</button>
-                <button onClick={handleSave}>Save</button> */}
               </div>
             ))}
           </div>
@@ -283,8 +258,6 @@ export default function DropModal({ onClose, setImages }) {
             <p>IMAGES DRIVE CULTURE</p>
           </div>
         )}
-
-        {/* Save button */}
       </motion.div>
       <div className={styles.overlay} onClick={onClose}></div>
     </div>
