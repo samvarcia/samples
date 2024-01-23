@@ -180,7 +180,7 @@ export default function DropModal({ onClose, setImages }) {
   }
 
   return (
-    <div className={styles.overlay}>
+    <div className={styles.modalContainer}>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -286,6 +286,7 @@ export default function DropModal({ onClose, setImages }) {
 
         {/* Save button */}
       </motion.div>
+      <div className={styles.overlay} onClick={onClose}></div>
     </div>
   );
 }
