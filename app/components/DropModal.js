@@ -190,7 +190,7 @@ export default function DropModal({ onClose, setImages }) {
                       />
                       <input
                         type="text"
-                        placeholder="Description"
+                        placeholder="Context"
                         className={styles.descriptionInput}
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
@@ -226,7 +226,7 @@ export default function DropModal({ onClose, setImages }) {
                       <div className={styles.descriptionBox}>
                         <textarea
                           type="text"
-                          placeholder="Description"
+                          placeholder="Context"
                           className={styles.descriptionInput}
                           value={description}
                           onChange={(e) => setDescription(e.target.value)}
