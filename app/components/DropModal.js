@@ -12,6 +12,7 @@ export default function DropModal({ onClose, setImages }) {
   const [description, setDescription] = useState("");
   const [type, setType] = useState("");
   const [websiteLoading, setWebsiteLoading] = useState(false);
+  const [isPaste, setIsPaste] = useState(false);
 
   function handleDragOver(event) {
     event.preventDefault();
@@ -108,6 +109,16 @@ export default function DropModal({ onClose, setImages }) {
 
     setIsDraggingOver(false);
   }
+
+  function handleIsPaste() {
+    setIsPaste(true);
+  }
+  function handlePasteSample(event) {
+    const pastedLink = event.clipboardData.getData("text/plain");
+
+    console.log(pastedLink);
+  }
+  // console.log("PASTE " + paste);
 
   async function handleSave(event) {
     event.preventDefault(); // Prevent the default form submission behavior
@@ -254,7 +265,23 @@ export default function DropModal({ onClose, setImages }) {
           </div>
         ) : (
           <div className={styles.dropText}>
-            <h2>DROP ANY REFERENCE (IMAGES & LINKS)</h2>
+            <div className={styles.pasteArea}>
+              {isPaste ? (
+                <input
+                  type="text"
+                  required
+                  placeholder="PASTE ANY REFERENCE"
+                  onPaste={(e) => handlePasteSample(e)}
+                  className={styles.pasteInput}
+                  // value={name}
+                  // onChange={(e) => setName(e.target.value)}
+                />
+              ) : (
+                <h2 onClick={handleIsPaste}>
+                  DROP OR PASTE ANY REFERENCE (IMAGES & LINKS)
+                </h2>
+              )}
+            </div>
             <p>IMAGES DRIVE CULTURE</p>
           </div>
         )}
