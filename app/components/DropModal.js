@@ -13,6 +13,7 @@ export default function DropModal({ onClose, setImages }) {
   const [type, setType] = useState("");
   const [websiteLoading, setWebsiteLoading] = useState(false);
   const [isPaste, setIsPaste] = useState(false);
+  const [pastedLink, setPastedLink] = useState("");
 
   function handleDragOver(event) {
     event.preventDefault();
@@ -113,10 +114,84 @@ export default function DropModal({ onClose, setImages }) {
   function handleIsPaste() {
     setIsPaste(true);
   }
-  function handlePasteSample(event) {
-    const pastedLink = event.clipboardData.getData("text/plain");
+  async function handlePasteSample() {
+    const pastedLinkSample = pastedLink;
 
-    console.log(pastedLink);
+    console.log(pastedLinkSample);
+
+    // Get the content link
+    const contentLink = pastedLinkSample;
+
+    const youtubeLinks = contentLink.includes("youtube.com")
+      ? [contentLink]
+      : [];
+    const websiteLinks = !contentLink.includes("youtube.com")
+      ? [contentLink]
+      : [];
+
+    // Prepare an array to store the preview content
+    const previewContent = [];
+
+    // Handle YouTube links
+    for (const youtubeLink of youtubeLinks) {
+      const videoId = youtubeLink.split("v=")[1].split("&")[0];
+      const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+      previewContent.push({ link: youtubeLink, thumbnail: thumbnailUrl });
+      setType("youtube");
+    }
+
+    // Handle website links using the Microlink API
+    for (const websiteLink of websiteLinks) {
+      if (!/(png|jpg)/.test(websiteLink)) {
+        try {
+          setWebsiteLoading(true);
+          const { status, data } = await mql(websiteLink, { screenshot: true });
+
+          if (status === "success" && data.screenshot) {
+            previewContent.push({
+              website: websiteLink,
+              link: websiteLink,
+              thumbnail: data.screenshot.url,
+            });
+            setType("website");
+          } else {
+            console.warn("Microlink data does not contain a screenshot:", data);
+          }
+        } catch (error) {
+          console.error("Error fetching Microlink data:", error);
+        } finally {
+          setWebsiteLoading(false); // Set loading state to false after API call
+        }
+      }
+    }
+
+    // if (/(jpg|jpeg|png)/i.test(contentLink)) {
+    //   const previewUrl = contentLink; // Replace this with your actual logic for obtaining the preview URL
+    //   previewContent.push({ link: previewUrl, thumbnail: previewUrl });
+    //   setType("image");
+    // }
+
+    // // Handle image links
+    // const imageLinks = Array.from(event.dataTransfer.items).filter(
+    //   (item) => item.kind === "string" && /\.(jpg|jpeg|png)$/i.test(item.type)
+    // );
+
+    // for (const imageLink of imageLinks) {
+    //   imageLink.getAsString((url) => {
+    //     previewContent.push({ link: url, thumbnail: url });
+    //     setType("image");
+    //   });
+    // }
+
+    // Update the preview state
+    setPreview([...preview, ...previewContent]);
+
+    // Use setImages to update the actual state with the preview content
+    // setImages((prevImages) => [...prevImages, ...images, ...previewContent]);
+
+    // Log the separated variables
+
+    setIsDraggingOver(false);
   }
   // console.log("PASTE " + paste);
 
@@ -188,7 +263,13 @@ export default function DropModal({ onClose, setImages }) {
             {preview.map((item, index) => (
               <div key={index} className={styles.preview}>
                 {item instanceof File ? (
-                  <div className={styles.previewContent}>
+                  <motion.div
+                    className={styles.previewContent}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     <img src={item.preview} alt="Preview" />
                     <form action="" className={styles.previewForm}>
                       <input
@@ -221,9 +302,15 @@ export default function DropModal({ onClose, setImages }) {
                         </button>
                       </div>
                     </form>
-                  </div>
+                  </motion.div>
                 ) : (
-                  <div className={styles.previewContent}>
+                  <motion.div
+                    className={styles.previewContent}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     <img src={item.thumbnail} alt="Thumbnail" />
                     <form action="" className={styles.previewForm}>
                       <input
@@ -258,7 +345,7 @@ export default function DropModal({ onClose, setImages }) {
                         </button>
                       </div>
                     </form>
-                  </div>
+                  </motion.div>
                 )}
               </div>
             ))}
@@ -267,22 +354,46 @@ export default function DropModal({ onClose, setImages }) {
           <div className={styles.dropText}>
             <div className={styles.pasteArea}>
               {isPaste ? (
-                <input
-                  type="text"
-                  required
-                  placeholder="PASTE ANY REFERENCE"
-                  onPaste={(e) => handlePasteSample(e)}
-                  className={styles.pasteInput}
-                  // value={name}
-                  // onChange={(e) => setName(e.target.value)}
-                />
+                <motion.div
+                  className={styles.pasteAreaContent}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <input
+                    type="text"
+                    required
+                    placeholder="PASTE ANY REFERENCE"
+                    onChange={(e) => setPastedLink(e.target.value)}
+                    className={styles.pasteInput}
+                    // value={name}
+                    // onChange={(e) => setName(e.target.value)}
+                  />
+                  <div className={styles.pasteAreButtons}>
+                    <button
+                      onClick={() => setIsPaste(false)}
+                      className={styles.cancelPasteButton}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handlePasteSample}
+                      className={styles.dropButton}
+                    >
+                      Drop
+                    </button>
+                  </div>
+                </motion.div>
               ) : (
-                <h2 onClick={handleIsPaste}>
-                  DROP OR PASTE ANY REFERENCE (IMAGES & LINKS)
-                </h2>
+                <>
+                  <h2 onClick={handleIsPaste}>
+                    DROP OR PASTE ANY REFERENCE (IMAGES & LINKS)
+                  </h2>
+                  <p>IMAGES DRIVE CULTURE</p>
+                </>
               )}
             </div>
-            <p>IMAGES DRIVE CULTURE</p>
           </div>
         )}
       </motion.div>

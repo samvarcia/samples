@@ -35,7 +35,7 @@
   overflow: hidden;
   height: 80%;
   padding: 30px;
-  color: rgba(0, 0, 0, 0.50);
+  color: #CFD3D6;
 }
 
 .dropText {
@@ -101,6 +101,36 @@
 
 .pasteArea {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.pasteAreaContent {
+  width: 100%;
+  /* border: 1px solid red; */
+}
+
+/* .pasteInput{
+  m
+}
+.pasteAreButtons {
+  margin-top: 20px;
+} */
+
+.pasteAreButtons button {
+  color: #CFD3D6;
+  font-size: 22px;
+  padding: 10px;
+  /* height: 30px; */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 400;
+  background-color: transparent;
 }
 
 .pasteInput {
@@ -116,7 +146,7 @@
   font-size: 30px;
   letter-spacing: -2px;
   text-align: center;
-  color: rgba(0, 0, 0, 0.50);
+  color: #CFD3D6;
   width: 100%;
 
 }
@@ -153,7 +183,7 @@
 
 .pasteInput::placeholder {
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.50);
+  color: #CFD3D6;
 
 }
 
