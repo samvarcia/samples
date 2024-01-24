@@ -117,8 +117,6 @@ export default function DropModal({ onClose, setImages }) {
   async function handlePasteSample() {
     const pastedLinkSample = pastedLink;
 
-    console.log(pastedLinkSample);
-
     // Get the content link
     const contentLink = pastedLinkSample;
 
@@ -164,36 +162,61 @@ export default function DropModal({ onClose, setImages }) {
         }
       }
     }
-
-    // if (/(jpg|jpeg|png)/i.test(contentLink)) {
-    //   const previewUrl = contentLink; // Replace this with your actual logic for obtaining the preview URL
-    //   previewContent.push({ link: previewUrl, thumbnail: previewUrl });
-    //   setType("image");
-    // }
-
-    // // Handle image links
-    // const imageLinks = Array.from(event.dataTransfer.items).filter(
-    //   (item) => item.kind === "string" && /\.(jpg|jpeg|png)$/i.test(item.type)
-    // );
-
-    // for (const imageLink of imageLinks) {
-    //   imageLink.getAsString((url) => {
-    //     previewContent.push({ link: url, thumbnail: url });
-    //     setType("image");
-    //   });
-    // }
-
-    // Update the preview state
     setPreview([...preview, ...previewContent]);
-
-    // Use setImages to update the actual state with the preview content
-    // setImages((prevImages) => [...prevImages, ...images, ...previewContent]);
-
-    // Log the separated variables
 
     setIsDraggingOver(false);
   }
-  // console.log("PASTE " + paste);
+
+  async function pastingSamples(event) {
+    const contentLink = event.clipboardData.getData("text/plain");
+
+    // console.log("PASTED: " + pastedSample);
+    const youtubeLinks = contentLink.includes("youtube.com")
+      ? [contentLink]
+      : [];
+    const websiteLinks = !contentLink.includes("youtube.com")
+      ? [contentLink]
+      : [];
+
+    // Prepare an array to store the preview content
+    const previewContent = [];
+
+    // Handle YouTube links
+    for (const youtubeLink of youtubeLinks) {
+      const videoId = youtubeLink.split("v=")[1].split("&")[0];
+      const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+      previewContent.push({ link: youtubeLink, thumbnail: thumbnailUrl });
+      setType("youtube");
+    }
+
+    // Handle website links using the Microlink API
+    for (const websiteLink of websiteLinks) {
+      if (!/(png|jpg)/.test(websiteLink)) {
+        try {
+          setWebsiteLoading(true);
+          const { status, data } = await mql(websiteLink, { screenshot: true });
+
+          if (status === "success" && data.screenshot) {
+            previewContent.push({
+              website: websiteLink,
+              link: websiteLink,
+              thumbnail: data.screenshot.url,
+            });
+            setType("website");
+          } else {
+            console.warn("Microlink data does not contain a screenshot:", data);
+          }
+        } catch (error) {
+          console.error("Error fetching Microlink data:", error);
+        } finally {
+          setWebsiteLoading(false); // Set loading state to false after API call
+        }
+      }
+    }
+    setPreview([...preview, ...previewContent]);
+
+    setIsDraggingOver(false);
+  }
 
   async function handleSave(event) {
     event.preventDefault(); // Prevent the default form submission behavior
@@ -241,7 +264,12 @@ export default function DropModal({ onClose, setImages }) {
   }
 
   return (
-    <div className={styles.modalContainer}>
+    <div
+      className={styles.modalContainer}
+      onPaste={(e) => {
+        pastingSamples(e);
+      }}
+    >
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
