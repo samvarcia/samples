@@ -75,6 +75,10 @@
   /* Make the modal fully opaque when active */
 }
 
+.mediaInfo {
+  max-width: 40%;
+}
+
 .mediaInfo h3 {
   font-size: 40px;
   letter-spacing: -2px;
