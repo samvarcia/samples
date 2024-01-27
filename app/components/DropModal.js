@@ -168,9 +168,34 @@ export default function DropModal({ onClose, setImages }) {
   }
 
   async function pastingSamples(event) {
+    event.preventDefault();
+
     const contentLink = event.clipboardData.getData("text/plain");
 
-    // console.log("PASTED: " + pastedSample);
+    // const pastedFiles = event.clipboardData.files[0];
+    // const reader = new FileReader();
+    // reader.readAsDataURL(pastedFiles);
+
+    // const pastedImageResult = reader.result;
+    //  const newMedia = Array.from(event.dataTransfer.files).map((file) =>
+    //   URL.createObjectURL(file)
+    // );
+    // console.log(pastedFiles);
+    // const clipboardData = event.clipboardData || window.clipboardData;
+
+    // if (clipboardData && clipboardData.items) {
+    //   for (let i = 0; i < clipboardData.items.length; i++) {
+    //     const item = clipboardData.items[i];
+    //     if (item.type.indexOf("image") !== -1) {
+    //       const blob = item.getAsFile();
+    //       const imageUrl = URL.createObjectURL(blob);
+    //       console.log("Pasted image URL:", imageUrl);
+
+    //       // If you want to display the pasted image in your component, you can set it to state
+    //       // this.setState({ pastedImage: imageUrl });
+    //     }
+    //   }
+    // }
     const youtubeLinks = contentLink.includes("youtube.com")
       ? [contentLink]
       : [];
@@ -275,7 +300,7 @@ export default function DropModal({ onClose, setImages }) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onDragLeave={handleDragLeave}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.3 }}
         className={`${styles.dropModal} ${
           isDraggingOver ? styles.blueBackground : ""
         }`}

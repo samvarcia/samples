@@ -48,8 +48,9 @@ export default function Home() {
     await fetch("/api/samples")
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.samples.rows);
+        // console.log(data.samples.rows);
         setImages(data.samples.rows);
+        setLoading(false);
       })
       .catch((err) => console.log(err))
       .finally(() => {
@@ -122,12 +123,12 @@ export default function Home() {
 
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Simulate your content loading process here
-    setTimeout(() => {
-      setLoading(false);
-    }, 1500); // Adjust the time based on your actual content loading time
-  }, []);
+  // useEffect(() => {
+  //   // Simulate your content loading process here
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 1500); // Adjust the time based on your actual content loading time
+  // }, []);
 
   return (
     <>

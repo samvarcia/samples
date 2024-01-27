@@ -1,9 +1,14 @@
 .splashWrapper {
-
+  text-align: center;
   display: flex;
-  /* flex-direction: column; */
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   /* padding: 6rem; */
   min-height: 100vh;
+}
+
+.splashWrapper p {
+  color: #ECE6CE;
+  margin-top: 20px;
 }

@@ -11,7 +11,8 @@ export default function SplashScreen() {
           height={126.07}
           alt="SAMPLES"
           className={styles.logo}
-        />{" "}
+        />
+        <p>INFINITE STREAM OF REFERENCES</p>
       </div>
     </div>
   );
