@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import styles from "./DropModal.module.css"; // Add appropriate styling
 import { motion } from "framer-motion";
 import mql from "@microlink/mql";
+import Image from "next/image";
 
 export default function DropModal({ onClose, setImages }) {
   const [isDraggingOver, setIsDraggingOver] = useState(false);
@@ -47,7 +48,14 @@ export default function DropModal({ onClose, setImages }) {
 
     // Prepare an array to store the preview content
     const previewContent = [];
-
+    for (const image of images) {
+      const imgbbLink = await uploadImageToImgBB(image);
+      if (imgbbLink) {
+        previewContent.push({ link: imgbbLink, thumbnail: imgbbLink });
+        // console.log(imgbbLink);
+        setType("image");
+      }
+    }
     // Handle YouTube links
     for (const youtubeLink of youtubeLinks) {
       const videoId = youtubeLink.split("v=")[1].split("&")[0];
@@ -99,14 +107,7 @@ export default function DropModal({ onClose, setImages }) {
       });
     }
 
-    // Update the preview state
     setPreview([...preview, ...previewContent]);
-
-    // Use setImages to update the actual state with the preview content
-    // setImages((prevImages) => [...prevImages, ...images, ...previewContent]);
-
-    // Log the separated variables
-    console.log("Preview Content:", previewContent);
 
     setIsDraggingOver(false);
   }
@@ -256,6 +257,12 @@ export default function DropModal({ onClose, setImages }) {
         }
       }
     }
+
+    if (/(jpg|jpeg|png)/i.test(contentLink)) {
+      const previewUrl = contentLink; // Replace this with your actual logic for obtaining the preview URL
+      previewContent.push({ link: previewUrl, thumbnail: previewUrl });
+      setType("image");
+    }
     setPreview([...preview, ...previewContent]);
 
     setIsDraggingOver(false);
@@ -341,7 +348,12 @@ export default function DropModal({ onClose, setImages }) {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <img src={item.preview} alt="Preview" />
+                    <Image
+                      width={600}
+                      height={500}
+                      src={item.preview}
+                      alt="Preview"
+                    />
                     <form action="" className={styles.previewForm}>
                       <input
                         type="text"
@@ -382,7 +394,7 @@ export default function DropModal({ onClose, setImages }) {
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <img src={item.thumbnail} alt="Thumbnail" />
+                    <img src={item.thumbnail} alt="Thumbnail" loading="lazy" />
                     <form action="" className={styles.previewForm}>
                       <input
                         type="text"
