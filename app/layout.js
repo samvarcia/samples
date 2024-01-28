@@ -31,12 +31,12 @@ export const metadata = {
     title: "SAMPLES",
     images: "/samplesog.png",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "SAMPLES",
-    description: "INFINITE STREAM OF DESIGN REFERENCES",
-    images: "/samplesog.png",
-  },
+  // twitter: {
+  //   card: "summary_large_image",
+  //   title: "SAMPLES",
+  //   description: "INFINITE STREAM OF DESIGN REFERENCES",
+  //   images: "/samplesog.png",
+  // },
 };
 
 export default function RootLayout({ children }) {
