@@ -166,36 +166,46 @@ export default function DropModal({ onClose, setImages }) {
 
     setIsDraggingOver(false);
   }
+  async function uploadImageToImgBB(imageFile) {
+    try {
+      const formData = new FormData();
+      formData.append("image", imageFile);
 
+      const response = await fetch(
+        "https://api.imgbb.com/1/upload?key=ee3ec80a22204ba422f8f9117aa75700",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const responseData = await response.json();
+
+      if (responseData.data && responseData.data.url) {
+        // console.log(responseData.data.url);
+        return responseData.data.url;
+      } else {
+        console.error(
+          "ImgBB API response is missing the expected data:",
+          responseData
+        );
+        return null;
+      }
+    } catch (error) {
+      console.error("Error uploading image to ImgBB:", error);
+      return null;
+    }
+  }
   async function pastingSamples(event) {
-    event.preventDefault();
+    // event.preventDefault();
 
     const contentLink = event.clipboardData.getData("text/plain");
+    const droppedFiles = event.clipboardData.files;
 
-    // const pastedFiles = event.clipboardData.files[0];
-    // const reader = new FileReader();
-    // reader.readAsDataURL(pastedFiles);
+    const imageFiles = Array.from(droppedFiles).filter((file) =>
+      /(png|jpg)/.test(file.type)
+    );
 
-    // const pastedImageResult = reader.result;
-    //  const newMedia = Array.from(event.dataTransfer.files).map((file) =>
-    //   URL.createObjectURL(file)
-    // );
-    // console.log(pastedFiles);
-    // const clipboardData = event.clipboardData || window.clipboardData;
-
-    // if (clipboardData && clipboardData.items) {
-    //   for (let i = 0; i < clipboardData.items.length; i++) {
-    //     const item = clipboardData.items[i];
-    //     if (item.type.indexOf("image") !== -1) {
-    //       const blob = item.getAsFile();
-    //       const imageUrl = URL.createObjectURL(blob);
-    //       console.log("Pasted image URL:", imageUrl);
-
-    //       // If you want to display the pasted image in your component, you can set it to state
-    //       // this.setState({ pastedImage: imageUrl });
-    //     }
-    //   }
-    // }
     const youtubeLinks = contentLink.includes("youtube.com")
       ? [contentLink]
       : [];
@@ -206,6 +216,14 @@ export default function DropModal({ onClose, setImages }) {
     // Prepare an array to store the preview content
     const previewContent = [];
 
+    for (const imageFile of imageFiles) {
+      const imgbbLink = await uploadImageToImgBB(imageFile);
+      if (imgbbLink) {
+        previewContent.push({ link: imgbbLink, thumbnail: imgbbLink });
+        // console.log(imgbbLink);
+        setType("image");
+      }
+    }
     // Handle YouTube links
     for (const youtubeLink of youtubeLinks) {
       const videoId = youtubeLink.split("v=")[1].split("&")[0];
