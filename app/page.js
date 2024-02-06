@@ -168,8 +168,29 @@ export default function Home() {
                 slidesPerView={3}
                 style={{ height: "100%", padding: "50px 0px" }}
                 initialSlide={0}
-                panoramaeffect={{ depth: 350, rotate: 25 }}
+                panoramaeffect={{ depth: 150, rotate: 45 }}
                 breakpoints={{
+                  320: {
+                    slidesPerView: 2,
+                    panoramaEffect: {
+                      rotate: 35,
+                      depth: 150,
+                    },
+                  },
+                  375: {
+                    slidesPerView: 2,
+                    panoramaEffect: {
+                      rotate: 35,
+                      depth: 150,
+                    },
+                  },
+                  425: {
+                    slidesPerView: 2,
+                    panoramaEffect: {
+                      rotate: 35,
+                      depth: 150,
+                    },
+                  },
                   480: {
                     slidesPerView: 2,
                     panoramaEffect: {

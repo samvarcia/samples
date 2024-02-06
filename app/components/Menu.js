@@ -42,6 +42,7 @@ export default function Menu({ onDropMedia, setImages }) {
       {/* Render the DropModal component conditionally */}
       {isDropModalOpen && (
         <DropModal
+          modalOpen={isDropModalOpen}
           onClose={closeDropModal}
           onDropMedia={handleDropMedia}
           setImages={setImages}

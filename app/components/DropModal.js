@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import mql from "@microlink/mql";
 import Image from "next/image";
 
-export default function DropModal({ onClose, setImages }) {
+export default function DropModal({ onClose, setImages, modalOpen }) {
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   const [preview, setPreview] = useState([]);
   const [name, setName] = useState("");
@@ -15,6 +15,8 @@ export default function DropModal({ onClose, setImages }) {
   const [websiteLoading, setWebsiteLoading] = useState(false);
   const [isPaste, setIsPaste] = useState(false);
   const [pastedLink, setPastedLink] = useState("");
+
+  console.log(modalOpen);
 
   function handleDragOver(event) {
     event.preventDefault();
@@ -198,74 +200,81 @@ export default function DropModal({ onClose, setImages }) {
     }
   }
   async function pastingSamples(event) {
-    // event.preventDefault();
+    if (modalOpen) {
+      // event.preventDefault();
 
-    const contentLink = event.clipboardData.getData("text/plain");
-    const droppedFiles = event.clipboardData.files;
+      const contentLink = event.clipboardData.getData("text/plain");
+      const droppedFiles = event.clipboardData.files;
 
-    const imageFiles = Array.from(droppedFiles).filter((file) =>
-      /(png|jpg)/.test(file.type)
-    );
+      const imageFiles = Array.from(droppedFiles).filter((file) =>
+        /(png|jpg)/.test(file.type)
+      );
 
-    const youtubeLinks = contentLink.includes("youtube.com")
-      ? [contentLink]
-      : [];
-    const websiteLinks = !contentLink.includes("youtube.com")
-      ? [contentLink]
-      : [];
+      const youtubeLinks = contentLink.includes("youtube.com")
+        ? [contentLink]
+        : [];
+      const websiteLinks = !contentLink.includes("youtube.com")
+        ? [contentLink]
+        : [];
 
-    // Prepare an array to store the preview content
-    const previewContent = [];
+      // Prepare an array to store the preview content
+      const previewContent = [];
 
-    for (const imageFile of imageFiles) {
-      const imgbbLink = await uploadImageToImgBB(imageFile);
-      if (imgbbLink) {
-        previewContent.push({ link: imgbbLink, thumbnail: imgbbLink });
-        // console.log(imgbbLink);
-        setType("image");
-      }
-    }
-    // Handle YouTube links
-    for (const youtubeLink of youtubeLinks) {
-      const videoId = youtubeLink.split("v=")[1].split("&")[0];
-      const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-      previewContent.push({ link: youtubeLink, thumbnail: thumbnailUrl });
-      setType("youtube");
-    }
-
-    // Handle website links using the Microlink API
-    for (const websiteLink of websiteLinks) {
-      if (!/(png|jpg)/.test(websiteLink)) {
-        try {
-          setWebsiteLoading(true);
-          const { status, data } = await mql(websiteLink, { screenshot: true });
-
-          if (status === "success" && data.screenshot) {
-            previewContent.push({
-              website: websiteLink,
-              link: websiteLink,
-              thumbnail: data.screenshot.url,
-            });
-            setType("website");
-          } else {
-            console.warn("Microlink data does not contain a screenshot:", data);
-          }
-        } catch (error) {
-          console.error("Error fetching Microlink data:", error);
-        } finally {
-          setWebsiteLoading(false); // Set loading state to false after API call
+      for (const imageFile of imageFiles) {
+        const imgbbLink = await uploadImageToImgBB(imageFile);
+        if (imgbbLink) {
+          previewContent.push({ link: imgbbLink, thumbnail: imgbbLink });
+          // console.log(imgbbLink);
+          setType("image");
         }
       }
-    }
+      // Handle YouTube links
+      for (const youtubeLink of youtubeLinks) {
+        const videoId = youtubeLink.split("v=")[1].split("&")[0];
+        const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+        previewContent.push({ link: youtubeLink, thumbnail: thumbnailUrl });
+        setType("youtube");
+      }
 
-    if (/(jpg|jpeg|png)/i.test(contentLink)) {
-      const previewUrl = contentLink; // Replace this with your actual logic for obtaining the preview URL
-      previewContent.push({ link: previewUrl, thumbnail: previewUrl });
-      setType("image");
-    }
-    setPreview([...preview, ...previewContent]);
+      // Handle website links using the Microlink API
+      for (const websiteLink of websiteLinks) {
+        if (!/(png|jpg)/.test(websiteLink)) {
+          try {
+            setWebsiteLoading(true);
+            const { status, data } = await mql(websiteLink, {
+              screenshot: true,
+            });
 
-    setIsDraggingOver(false);
+            if (status === "success" && data.screenshot) {
+              previewContent.push({
+                website: websiteLink,
+                link: websiteLink,
+                thumbnail: data.screenshot.url,
+              });
+              setType("website");
+            } else {
+              console.warn(
+                "Microlink data does not contain a screenshot:",
+                data
+              );
+            }
+          } catch (error) {
+            console.error("Error fetching Microlink data:", error);
+          } finally {
+            setWebsiteLoading(false); // Set loading state to false after API call
+          }
+        }
+      }
+
+      if (/(jpg|jpeg|png)/i.test(contentLink)) {
+        const previewUrl = contentLink; // Replace this with your actual logic for obtaining the preview URL
+        previewContent.push({ link: previewUrl, thumbnail: previewUrl });
+        setType("image");
+      }
+      setPreview([...preview, ...previewContent]);
+
+      setIsDraggingOver(false);
+    }
   }
 
   async function handleSave(event) {
@@ -314,13 +323,11 @@ export default function DropModal({ onClose, setImages }) {
   }
 
   return (
-    <div
-      className={styles.modalContainer}
-      onPaste={(e) => {
-        pastingSamples(e);
-      }}
-    >
+    <div className={styles.modalContainer}>
       <motion.div
+        onPaste={(e) => {
+          pastingSamples(e);
+        }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
